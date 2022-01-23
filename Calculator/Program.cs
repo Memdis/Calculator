@@ -8,8 +8,7 @@ namespace Calculator
 {
     static class Program
     {
-        static private readonly List<char> _allowedNums = new List<char>() { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-        static private readonly List<char> _allowedSigns = new List<char>() { '+' };
+        static private readonly List<IOperation> _allowedSigns = new List<IOperation>() { new PlusOperation(), new MinusOperation(), new MultOperation(), new DivOperation() };
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -20,7 +19,7 @@ namespace Calculator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var calculator = new BasicCalculator(_allowedNums, _allowedSigns);
+            var calculator = new BasicCalculator(_allowedSigns);
             Application.Run(new MainForm(calculator));
         }
     }

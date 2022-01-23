@@ -22,9 +22,7 @@ namespace Calculator
         }
 
         private void computeButton_Click(object sender, EventArgs e)
-        {
-            // TODO: allowednum and sign previesť na list a potom bude array iba allowedChar
-            
+        {          
             String inputString = inputFieldTextBox.Text;
             computedResultLabel.Text = _calculator.Calculate(inputString);
         }
