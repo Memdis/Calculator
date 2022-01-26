@@ -14,7 +14,7 @@ namespace Calculator
             return 0;
         }
 
-        public string GetRepresentation()
+        public string GetStringRepresentation()
         {
             return "+";
         }
