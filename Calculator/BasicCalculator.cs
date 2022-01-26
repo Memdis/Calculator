@@ -11,124 +11,132 @@ namespace Calculator
 
         public BasicCalculator(IEnumerable<IOperation> allowedOperations)
         {
-            //_allowedChars.AddRange(allowedOperations);
             _allowedOperations = allowedOperations;
         }
         public string Calculate(string inputString)
         {
-
-            //inputString = inputString.RemoveOtherThanAllowedChars(_allowedChars);
-
-            return ComputeResult(inputString);
+            List<object> equation = ConvertStringToNumbersAndOperations(inputString);
+            return CalculateResultOfEquation(equation);
         }
 
-        private string ComputeResult(string InputTrimmedString)
+        private List<object> ConvertStringToNumbersAndOperations(string inputString)
         {
-            List<object> objects = StringToObjects(InputTrimmedString);
-            List<IOperation> sortedOperations = SortedOperations(objects);
+            string number = string.Empty;
+            List<object> equation = new List<object>();
+
+            for (int i = 0; i < inputString.Length; i++)
+            {
+                char currentChar = inputString[i];
+
+                if (Char.IsDigit(currentChar))                 //TODO implement double instead of int
+                {
+                    number += currentChar.ToString();
+
+                    if (i == inputString.Length - 1)
+                    {
+                        AddNumToEquationAndReturnEmptyString(number, equation);
+                    }
+                }
+                else
+                {
+                    if (number != string.Empty)
+                    {
+                        number = AddNumToEquationAndReturnEmptyString(number, equation);
+                    }
+
+                    int operationSignLength = GetOperationSignLength(inputString, i);
+                    string operationSign = inputString.Substring(i, operationSignLength);
+
+                    AddOperationToEquation(equation, operationSign);
+                }
+            }
+
+            return equation;
+        }
+
+        private string CalculateResultOfEquation(List<object> equation)
+        {
+            List<IOperation> sortedOperations = SortOperationsByMathPriority(equation);
 
             for (int i = 0; i < sortedOperations.Count; i++)
             {
                 IOperation operation = sortedOperations[i];
                 double operationResult = double.MaxValue;
-                int index = operation.Index;
+                int operationIndex = operation.Index;
 
-                IOperation opToExecute = (IOperation)objects[index];
+                IOperation operationToExecute = (IOperation)equation[operationIndex];
 
                 try
                 {
-                    operationResult = opToExecute.Execute(Convert.ToDouble(objects[index - 1]), Convert.ToDouble(objects[index + 1]));
+                    operationResult = operationToExecute.Execute(Convert.ToDouble(equation[operationIndex - 1]), Convert.ToDouble(equation[operationIndex + 1]));
                 }
                 catch (Exception)
                 {
                     throw new FormatException("Format of input string is incorrect!"); //TODO pupup window
                 }
 
-                for (int j = index + 1; j < objects.Count; j++)
+                for (int j = operationIndex + 1; j < equation.Count; j++)
                 {
-                    if (objects[j] is IOperation)
+                    if (equation[j] is IOperation)
                     {
-                        ((IOperation)objects[j]).Index -= 2;
+                        ((IOperation)equation[j]).Index -= 2;
                     }
                 }
 
-                objects[index - 1] = operationResult;
-                objects.RemoveRange(index, 2);
+                equation[operationIndex - 1] = operationResult;
+                equation.RemoveRange(operationIndex, 2);
             }
 
-            return Convert.ToString(objects[0]);
+            object equationResult = equation[0];
+            return Convert.ToString(equationResult);
         }
 
-        //why method StringToObject -> to have list of objects (numbers and math operations) from the given string
-        private List<object> StringToObjects(string inputString)
+        
+
+        private void AddOperationToEquation(List<object> objects, string operationSign)
         {
-            string num = string.Empty;
-            List<object> objects = new List<object>();
-
-            for (int i = 0; i < inputString.Length; i++)
+            foreach (var operation in _allowedOperations)
             {
-                if (Char.IsDigit(inputString[i]))
+                if (operationSign == operation.GetStringRepresentation())
                 {
-                    num += inputString[i].ToString();
-
-                    if (i == inputString.Length - 1)
-                    {
-                        try
-                        {
-                            objects.Add(int.Parse(num));
-                            num = string.Empty;
-                        }
-                        catch (FormatException ex)
-                        {
-                            throw; //TODO implement exception
-                        }
-                    }
+                    IOperation newOperation = operation.NewOperation();
+                    newOperation.Index = objects.Count;
+                    objects.Add(newOperation);
                 }
-                else
+            }
+        }
+
+        private int GetOperationSignLength(string inputString, int startIndex)
+        {
+            int subStrLength = 1;
+
+            for (int j = startIndex + 1; j < inputString.Length; j++)
+            {
+                if (Char.IsDigit(inputString[j]))
                 {
-                    if (num != string.Empty)
-                    {
-                        try
-                        {
-                            objects.Add(int.Parse(num));
-                            num = string.Empty;
-                        }
-                        catch (FormatException ex)
-                        {
-                            throw; //TODO implement exception
-                        }
-                    }
-
-                    int subStrLength = 1;
-
-                    for (int j = i + 1; j < inputString.Length; j++)
-                    {
-                        if (Char.IsDigit(inputString[j]))
-                        {
-                            subStrLength = j - i;
-                            break;
-                        }
-                    }
-
-                    string sign = inputString.Substring(i, subStrLength);
-
-                    foreach (var operation in _allowedOperations)
-                    {
-                        if (sign == operation.GetRepresentation())
-                        {
-                            IOperation newOperation = operation.NewOperation();
-                            newOperation.Index = objects.Count;
-                            objects.Add(newOperation);
-                        }
-                    }
+                    subStrLength = j - startIndex;
+                    break;
                 }
             }
 
-            return objects;
+            return subStrLength;
         }
 
-        //why method SortedOperations -> to sort operations derived from given string by their mathematical priority
-        private List<IOperation> SortedOperations(List<object> numsAndOperations)
+        private string AddNumToEquationAndReturnEmptyString(string num, List<object> objects)
+        {
+            try
+            {
+                objects.Add(int.Parse(num));
+            }
+            catch (FormatException ex)
+            {
+                throw; //TODO implement exception
+            }
+
+            return string.Empty;
+        }
+
+        private List<IOperation> SortOperationsByMathPriority(List<object> numsAndOperations)
         {
             List<IOperation> operations = new List<IOperation>();
             

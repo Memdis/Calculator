@@ -27,8 +27,6 @@ namespace Calculator
             computedResultLabel.Text = _calculator.Calculate(inputString);
         }
 
-        
-
         private void ShowPopUpError (Exception Ex)
         {
             String message = Ex.Message;
