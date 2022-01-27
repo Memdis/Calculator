@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ExtensionMethods;
+using System.Globalization;
 
 
 namespace Calculator
@@ -41,7 +42,14 @@ namespace Calculator
                 {
                     if (number != string.Empty)
                     {
-                        number = AddNumToEquationAndReturnEmptyString(number, equation);
+                        if (currentChar == CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0]) //TODO nastavenie desatinnej čiarky/bodky
+                        {
+                            number += currentChar.ToString();
+                        }
+                        else
+                        {
+                            number = AddNumToEquationAndReturnEmptyString(number, equation);
+                        }
                     }
 
                     int operationSignLength = GetOperationSignLength(inputString, i);
@@ -126,7 +134,7 @@ namespace Calculator
         {
             try
             {
-                objects.Add(int.Parse(num));
+                objects.Add(double.Parse(num));
             }
             catch (FormatException ex)
             {
