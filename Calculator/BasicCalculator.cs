@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ExtensionMethods;
 using System.Globalization;
 
 
@@ -9,6 +8,7 @@ namespace Calculator
     public class BasicCalculator : ICalculator
     {
         private readonly IEnumerable<IOperation> _allowedOperations = new List<IOperation>();
+        private readonly IEquation _equation;
 
         public BasicCalculator(IEnumerable<IOperation> allowedOperations)
         {
@@ -16,26 +16,28 @@ namespace Calculator
         }
         public string Calculate(string inputString)
         {
-            List<object> equation = ConvertStringToNumbersAndOperations(inputString);
-            return CalculateResultOfEquation(equation);
+            IEquation equation = new Equation(ConvertStringToItemsOfEquation(inputString));
+
+            double result = equation.Calculate();
+            return Convert.ToString(result);
         }
 
-        private List<object> ConvertStringToNumbersAndOperations(string inputString)
+        private List<object> ConvertStringToItemsOfEquation(string inputString)
         {
             string number = string.Empty;
-            List<object> equation = new List<object>();
+            List<object> items = new List<object>();
 
             for (int i = 0; i < inputString.Length; i++)
             {
                 char currentChar = inputString[i];
 
-                if (Char.IsDigit(currentChar))                 //TODO implement double instead of int
+                if (Char.IsDigit(currentChar))
                 {
                     number += currentChar.ToString();
 
                     if (i == inputString.Length - 1)
                     {
-                        AddNumToEquationAndReturnEmptyString(number, equation);
+                        AddNumToEquationAndReturnEmptyString(number, items);
                     }
                 }
                 else
@@ -48,68 +50,68 @@ namespace Calculator
                         }
                         else
                         {
-                            number = AddNumToEquationAndReturnEmptyString(number, equation);
+                            number = AddNumToEquationAndReturnEmptyString(number, items);
                         }
                     }
-
-                    int operationSignLength = GetOperationSignLength(inputString, i);
-                    string operationSign = inputString.Substring(i, operationSignLength);
-
-                    AddOperationToEquation(equation, operationSign);
-                }
-            }
-
-            return equation;
-        }
-
-        private string CalculateResultOfEquation(List<object> equation)
-        {
-            List<IOperation> sortedOperations = SortOperationsByMathPriority(equation);
-
-            for (int i = 0; i < sortedOperations.Count; i++)
-            {
-                IOperation operation = sortedOperations[i];
-                double operationResult = double.MaxValue;
-                int operationIndex = operation.Index;
-
-                IOperation operationToExecute = (IOperation)equation[operationIndex];
-
-                try
-                {
-                    operationResult = operationToExecute.Execute(Convert.ToDouble(equation[operationIndex - 1]), Convert.ToDouble(equation[operationIndex + 1]));
-                }
-                catch (Exception)
-                {
-                    throw new FormatException("Format of input string is incorrect!"); //TODO pupup window
-                }
-
-                for (int j = operationIndex + 1; j < equation.Count; j++)
-                {
-                    if (equation[j] is IOperation)
+                    
+                    if (currentChar == '(')
                     {
-                        ((IOperation)equation[j]).Index -= 2;
+                        string subString = inputString.Substring(i);
+                        var subEquationAndNewIndex = ConvertParenthesisToEquation(subString);
+                        items.Add(subEquationAndNewIndex.subEquation);
+                        i += subEquationAndNewIndex.newI;
+                    }
+                    else
+                    {
+                        int operationSignLength = GetOperationSignLength(inputString, i);
+                        string operationSign = inputString.Substring(i, operationSignLength);
+
+                        AddOperationToEquation(items, operationSign);
                     }
                 }
-
-                equation[operationIndex - 1] = operationResult;
-                equation.RemoveRange(operationIndex, 2);
             }
 
-            object equationResult = equation[0];
-            return Convert.ToString(equationResult);
+            return items;
         }
 
-        
+        private (IEquation subEquation, int newI) ConvertParenthesisToEquation(string input)
+        {
+            int leftParenthesisCount = 0;
+            int rightParenthesisCount = 0;
+            int endIndex = -1;
 
-        private void AddOperationToEquation(List<object> objects, string operationSign)
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '(')
+                {
+                    leftParenthesisCount += 1;
+                }
+                else if (input[i] == ')')
+                {
+                    rightParenthesisCount += 1;
+                }
+
+                if (leftParenthesisCount == rightParenthesisCount)
+                {
+                    endIndex = i;
+                    break;
+                }
+            }
+
+            string subString = input.Substring(1, endIndex - 1);
+            IEquation subEquation = new Equation(ConvertStringToItemsOfEquation(subString));
+            return (subEquation, endIndex);
+        }
+        
+        private void AddOperationToEquation(List<object> items, string operationSign)
         {
             foreach (var operation in _allowedOperations)
             {
                 if (operationSign == operation.GetStringRepresentation())
                 {
                     IOperation newOperation = operation.NewOperation();
-                    newOperation.Index = objects.Count;
-                    objects.Add(newOperation);
+                    newOperation.Index = items.Count;
+                    items.Add(newOperation);
                 }
             }
         }
@@ -120,7 +122,8 @@ namespace Calculator
 
             for (int j = startIndex + 1; j < inputString.Length; j++)
             {
-                if (Char.IsDigit(inputString[j]))
+                char currentChar = inputString[j];
+                if (Char.IsDigit(currentChar) || currentChar == '(')
                 {
                     subStrLength = j - startIndex;
                     break;
@@ -142,23 +145,6 @@ namespace Calculator
             }
 
             return string.Empty;
-        }
-
-        private List<IOperation> SortOperationsByMathPriority(List<object> numsAndOperations)
-        {
-            List<IOperation> operations = new List<IOperation>();
-            
-            foreach (var obj in numsAndOperations)
-            {
-                if (obj is IOperation)
-                {
-                    operations.Add((IOperation)obj);
-                }
-            }
-            
-            operations.Sort((y, x) => x.GetPriority().CompareTo(y.GetPriority()));
-
-            return operations;
         }
     }
 }
