@@ -16,54 +16,60 @@ namespace Calculator
 
         public double Calculate()
         {
-            List<IOperation> sortedOperations = SortOperationsByMathPriority(Items);
+            var functionsAndSortedOperations = GetFunctionsAndSortedOperations();
+            List<IFunction> functions = functionsAndSortedOperations.functions;
+            List<IOperation> sortedOperations = functionsAndSortedOperations.sortedOperations;
 
+            ExecuteFunctions(functions);
+            ExecutOperations(sortedOperations);
+
+            return GetEquationResult();
+        }
+
+        double GetEquationResult()
+        {
+            if (Items.Count <= 0)
+            {
+                return 0;
+            }
+
+            if (Items[0] is IEquation  )
+            {
+                IEquation equation = (IEquation)Items[0];
+                return Convert.ToDouble(equation.Calculate());
+            }
+
+            try
+            {
+                return Convert.ToDouble(Items[0]);
+            }
+            catch (Exception)
+            {
+                throw new FormatException("Wrong input format!"); //TODO pupup window
+            }
+        }
+
+        private void ExecuteFunctions(List<IFunction> functions)
+        {
+            for (int i = 0; i < functions.Count; i++)
+            {
+                double functionResult = functions[i].Execute();
+
+                Items[functions[i].Index] = functionResult;
+            }
+        }
+
+        private void ExecutOperations(List<IOperation> sortedOperations)
+        {
             for (int i = 0; i < sortedOperations.Count; i++)
             {
-                IOperation operation = sortedOperations[i];
-                double operationResult = double.MaxValue;
-                int operationIndex = operation.Index;
-
+                int operationIndex = sortedOperations[i].Index;
                 IOperation operationToExecute = (IOperation)Items[operationIndex];
 
-                double leftNumber = double.MinValue;
-                double rightNumber = double.MinValue;
+                double leftNumber = GetNumberForOperation(-1, operationIndex);
+                double rightNumber = GetNumberForOperation(1, operationIndex);
 
-                if (Items[operationIndex - 1] is IEquation)
-                {
-                    IEquation leftEquation = (IEquation)Items[operationIndex - 1];
-                    leftNumber = leftEquation.Calculate();
-                }
-                else
-                {
-                    try
-                    {
-                        leftNumber = Convert.ToDouble(Items[operationIndex - 1]);
-                    }
-                    catch (Exception)
-                    {
-                        throw new FormatException("Format of input string is incorrect!");
-                    }
-                }
-
-                if (Items[operationIndex + 1] is IEquation)
-                {
-                    IEquation rightEquation = (IEquation)Items[operationIndex + 1];
-                    rightNumber = rightEquation.Calculate();
-                }
-                else
-                {
-                    try
-                    {
-                        rightNumber = Convert.ToDouble(Items[operationIndex + 1]);
-                    }
-                    catch (Exception)
-                    {
-                        throw new FormatException("Format of input string is incorrect!");
-                    }
-                }
-
-                operationResult = operationToExecute.Execute(leftNumber, rightNumber);
+                double operationResult = operationToExecute.Execute(leftNumber, rightNumber);
 
                 for (int j = operationIndex + 1; j < Items.Count; j++)
                 {
@@ -77,31 +83,47 @@ namespace Calculator
                 Items.RemoveRange(operationIndex, 2);
             }
 
-            if (Items[0] is IEquation)
+            double GetNumberForOperation(int indexShift, int operationIndex)
             {
-                IEquation equation = (IEquation)Items[0];
-                return Convert.ToDouble(equation.Calculate());
+                if (Items[operationIndex + indexShift] is IEquation)
+                {
+                    IEquation equation = (IEquation)Items[operationIndex + indexShift];
+                    return equation.Calculate();
+                }
+                else
+                {
+                    try
+                    {
+                        return Convert.ToDouble(Items[operationIndex + indexShift]);
+                    }
+                    catch (Exception)
+                    {
+                        throw new FormatException("Format of input string is incorrect!");
+                    }
+                }
             }
-
-            object equationResult = Items[0];
-            return Convert.ToDouble(equationResult);
         }
 
-        private List<IOperation> SortOperationsByMathPriority(List<object> numsAndOperations)
+        private (List<IFunction> functions, List<IOperation> sortedOperations) GetFunctionsAndSortedOperations()
         {
-            List<IOperation> operations = new List<IOperation>();
+            List<IFunction> functions = new List<IFunction>();
+            List<IOperation> sortedOperations = new List<IOperation>();
 
-            foreach (var obj in numsAndOperations)
+            foreach (var item in Items)
             {
-                if (obj is IOperation)
+                if (item is IFunction)
                 {
-                    operations.Add((IOperation)obj);
+                    functions.Add((IFunction)item);
+                }
+                else if (item is IOperation)
+                {
+                    sortedOperations.Add((IOperation)item);
                 }
             }
 
-            operations.Sort((y, x) => x.GetPriority().CompareTo(y.GetPriority()));
+            sortedOperations.Sort((y, x) => x.GetPriority().CompareTo(y.GetPriority()));
 
-            return operations;
+            return (functions, sortedOperations);
         }
     }
 }

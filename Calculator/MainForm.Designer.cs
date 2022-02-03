@@ -56,7 +56,7 @@ namespace Calculator
             // 
             this.computedResultLabel.AutoSize = true;
             this.computedResultLabel.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.computedResultLabel.Location = new System.Drawing.Point(12, 92);
+            this.computedResultLabel.Location = new System.Drawing.Point(12, 82);
             this.computedResultLabel.Name = "computedResultLabel";
             this.computedResultLabel.Size = new System.Drawing.Size(13, 15);
             this.computedResultLabel.TabIndex = 3;

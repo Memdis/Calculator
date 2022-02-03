@@ -8,15 +8,16 @@ namespace Calculator
     public class BasicCalculator : ICalculator
     {
         private readonly IEnumerable<IOperation> _allowedOperations = new List<IOperation>();
-        private readonly IEquation _equation;
+        private readonly IEnumerable<IFunction> _allowedFunctions = new List<IFunction>();
 
-        public BasicCalculator(IEnumerable<IOperation> allowedOperations)
+        public BasicCalculator(IEnumerable<IOperation> allowedOperations, IEnumerable<IFunction> aloweddFunctions)
         {
             _allowedOperations = allowedOperations;
+            _allowedFunctions = aloweddFunctions;
         }
         public string Calculate(string inputString)
         {
-            IEquation equation = new Equation(ConvertStringToItemsOfEquation(inputString));
+            var equation = new Equation(ConvertStringToItemsOfEquation(inputString));
 
             double result = equation.Calculate();
             return Convert.ToString(result);
@@ -47,6 +48,7 @@ namespace Calculator
                         if (currentChar == CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0]) //TODO nastavenie desatinnej čiarky/bodky
                         {
                             number += currentChar.ToString();
+                            continue;
                         }
                         else
                         {
@@ -63,10 +65,30 @@ namespace Calculator
                     }
                     else
                     {
-                        int operationSignLength = GetOperationSignLength(inputString, i);
-                        string operationSign = inputString.Substring(i, operationSignLength);
+                        string itemStringRepresentation = GetStringOfItem(inputString, i);
 
-                        AddOperationToEquation(items, operationSign);
+                        object item = GetOperationOrFunction(itemStringRepresentation, items.Count);
+
+                        if (item != null)
+                        {
+                            if (item is IFunction)
+                            {
+                                i += itemStringRepresentation.Length;
+                                string subString = inputString.Substring(i);
+                                var subEquationAndNewIndex = ConvertParenthesisToEquation(subString);
+                                ((IFunction)item).Equation = subEquationAndNewIndex.subEquation;
+                                items.Add(item);
+                                i += subEquationAndNewIndex.newI;
+                                continue;
+                            }
+
+                            items.Add(item);
+                            continue;
+                        }
+                        else
+                        {
+                            throw new FormatException("Incorrect format of input!"); //TODO popup window
+                        }
                     }
                 }
             }
@@ -103,34 +125,81 @@ namespace Calculator
             return (subEquation, endIndex);
         }
         
-        private void AddOperationToEquation(List<object> items, string operationSign)
+        private object GetOperationOrFunction(string itemStringRepresentation, int itemsCount)
         {
             foreach (var operation in _allowedOperations)
             {
-                if (operationSign == operation.GetStringRepresentation())
+                if (itemStringRepresentation == operation.GetStringRepresentation())
                 {
                     IOperation newOperation = operation.NewOperation();
-                    newOperation.Index = items.Count;
-                    items.Add(newOperation);
+                    newOperation.Index = itemsCount;
+                    return (newOperation);
                 }
             }
+
+            foreach (var function in _allowedFunctions)
+            {
+                if (itemStringRepresentation == function.GetStringRepresentation())
+                {
+                    IFunction newFunction = function.NewFunction();
+                    newFunction.Index = itemsCount;
+                    return (newFunction);
+                }
+            }
+
+            return null;
         }
 
-        private int GetOperationSignLength(string inputString, int startIndex)
+        private string GetStringOfItem(string inputString, int startIndex) //TODO zjednodusit logiku. Možno tu, ale hlavne v metode ConvertStringToItemsOfEquation.
+                                                                           //Sem sa dostaneme keď daný char nie je číslo, alebo čiarka alebo zátvorka.
+                                                                           //Takto to preniesť aj do kódu
         {
             int subStrLength = 1;
+            string itemString = string.Empty;
 
-            for (int j = startIndex + 1; j < inputString.Length; j++)
+            itemString = CheckIfItemIsOperation();
+            if (itemString != string.Empty)
             {
-                char currentChar = inputString[j];
-                if (Char.IsDigit(currentChar) || currentChar == '(')
-                {
-                    subStrLength = j - startIndex;
-                    break;
-                }
+                return itemString;
             }
 
-            return subStrLength;
+            itemString = GetStringUntilDigitOrParenthesis();
+            return itemString;
+
+            string CheckIfItemIsOperation()
+            {
+                foreach (var operation in _allowedOperations)
+                {
+                    if (inputString[startIndex].ToString() == operation.GetStringRepresentation())
+                    {
+                        return SetSubstring(startIndex, 1);
+                    }
+                }
+
+                return string.Empty;
+            }
+
+            string GetStringUntilDigitOrParenthesis()
+            {
+                for (int j = startIndex; j < inputString.Length; j++)
+                {
+                    char currentChar = inputString[j];
+
+                    if (Char.IsDigit(currentChar) || currentChar == '(')
+                    {
+                        return SetSubstring(j, 0);
+                    }
+                }
+
+                return string.Empty;
+            }
+
+            string SetSubstring(int currentIndex, int shift)
+            {
+                subStrLength = currentIndex + shift - startIndex;
+                itemString = inputString.Substring(startIndex, subStrLength);
+                return itemString;
+            }
         }
 
         private string AddNumToEquationAndReturnEmptyString(string num, List<object> objects)
