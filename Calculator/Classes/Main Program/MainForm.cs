@@ -29,11 +29,7 @@ namespace Calculator
             computedResultLabel.Text = _calculator.Calculate(inputString);
 
             _logger.Log(inputString, computedResultLabel.Text);
-            
-            /*
-            */
 
-        //TODO logging equation and results to file
         //TODO logging errors?
     }
 
