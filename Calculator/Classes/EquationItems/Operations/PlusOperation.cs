@@ -1,17 +1,10 @@
-﻿using System;
-
-namespace Calculator
+﻿namespace Calculator
 {
-    public class PlusOperation : IOperation
+    public class PlusOperation : ExecutableEquationItem, IOperation
     {
         public double Execute(double firstNum, double secondNum)
         {
             return firstNum + secondNum;
-        }
-
-        public int GetPriority()
-        {
-            return 0;
         }
 
         public string GetStringRepresentation()
@@ -19,9 +12,7 @@ namespace Calculator
             return "+";
         }
 
-        public int Index { get; set; }
-
-        public IOperation NewOperation()
+        public IOperation NewInstance()
         {
             return new PlusOperation();
         }

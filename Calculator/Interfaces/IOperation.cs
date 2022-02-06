@@ -6,6 +6,6 @@
         string GetStringRepresentation();
         int GetPriority();
         int Index { get; set; }
-        IOperation NewOperation();
+        IOperation NewInstance();
     }
 }

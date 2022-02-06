@@ -1,13 +1,13 @@
 ﻿namespace Calculator
 {
-    public class DivOperation : IOperation
+    public class DivOperation : ExecutableEquationItem, IOperation
     {
         public double Execute(double firstNum, double secondNum)
         {
             return firstNum / secondNum;
         }
 
-        public int GetPriority()
+        public override int GetPriority()
         {
             return 1;
         }
@@ -17,9 +17,7 @@
             return "/";
         }
 
-        public int Index { get; set; }
-
-        public IOperation NewOperation()
+        public IOperation NewInstance()
         {
             return new DivOperation();
         }

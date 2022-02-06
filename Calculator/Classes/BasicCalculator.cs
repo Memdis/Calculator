@@ -69,26 +69,48 @@ namespace Calculator
 
                         object item = GetOperationOrFunction(itemStringRepresentation, items.Count);
 
-                        if (item != null)
+                        if (item == null)
                         {
-                            if (item is IFunction)
+                            throw new FormatException("Incorrect format of input!"); //TODO popup window
+                        }
+                        
+                        if (item is IFunction)
+                        {
+                            i += itemStringRepresentation.Length;
+                            string subString = inputString.Substring(i);
+                            var subEquationAndNewIndex = ConvertParenthesisToEquation(subString);
+                            ((IFunction)item).Equation = subEquationAndNewIndex.subEquation;
+
+                            if (item is IFunctionBaseEq)
                             {
-                                i += itemStringRepresentation.Length;
-                                string subString = inputString.Substring(i);
-                                var subEquationAndNewIndex = ConvertParenthesisToEquation(subString);
-                                ((IFunction)item).Equation = subEquationAndNewIndex.subEquation;
-                                items.Add(item);
+                                object lastItem = items[items.Count - 1];
+
+                                if (lastItem is IEquation)
+                                {
+                                    ((IFunctionBaseEq)item).BaseEquation = (IEquation)lastItem;
+                                }
+                                else
+                                {
+                                    IEquation baseEquation = new Equation(new List<object>() { (double)lastItem });
+                                    ((IFunctionBaseEq)item).BaseEquation = baseEquation;
+                                }
+
+                                ((IFunctionBaseEq)item).Index -= 1;
+                                items[items.Count - 1] = item;
                                 i += subEquationAndNewIndex.newI;
+
                                 continue;
                             }
 
                             items.Add(item);
+                            i += subEquationAndNewIndex.newI;
+
                             continue;
                         }
-                        else
-                        {
-                            throw new FormatException("Incorrect format of input!"); //TODO popup window
-                        }
+
+                        items.Add(item);
+
+                        continue;
                     }
                 }
             }
@@ -131,7 +153,7 @@ namespace Calculator
             {
                 if (itemStringRepresentation == operation.GetStringRepresentation())
                 {
-                    IOperation newOperation = operation.NewOperation();
+                    IOperation newOperation = operation.NewInstance();
                     newOperation.Index = itemsCount;
                     return (newOperation);
                 }
@@ -141,7 +163,7 @@ namespace Calculator
             {
                 if (itemStringRepresentation == function.GetStringRepresentation())
                 {
-                    IFunction newFunction = function.NewFunction();
+                    IFunction newFunction = function.NewInstance();
                     newFunction.Index = itemsCount;
                     return (newFunction);
                 }
@@ -150,11 +172,8 @@ namespace Calculator
             return null;
         }
 
-        private string GetStringOfItem(string inputString, int startIndex) //TODO zjednodusit logiku. Možno tu, ale hlavne v metode ConvertStringToItemsOfEquation.
-                                                                           //Sem sa dostaneme keď daný char nie je číslo, alebo čiarka alebo zátvorka.
-                                                                           //Takto to preniesť aj do kódu
+        private string GetStringOfItem(string inputString, int startIndex) 
         {
-            int subStrLength = 1;
             string itemString = string.Empty;
 
             itemString = CheckIfItemIsOperation();
@@ -196,7 +215,7 @@ namespace Calculator
 
             string SetSubstring(int currentIndex, int shift)
             {
-                subStrLength = currentIndex + shift - startIndex;
+                int subStrLength = currentIndex + shift - startIndex;
                 itemString = inputString.Substring(startIndex, subStrLength);
                 return itemString;
             }

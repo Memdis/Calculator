@@ -2,24 +2,12 @@
 
 namespace Calculator
 {
-    public class Log10Function : IFunction
+    public class Log10Function : ExecutableEquationItem, IFunction
     {
         public IEquation Equation { get; set; }
-        public int Index { get ; set; }
-
-        /*public void SetEquation(IEquation equation)
-        {
-            Equation = equation;
-        }*/
-
         public double Execute()
         {
             return Math.Log10(Equation.Calculate());
-        }
-
-        public int GetPriority()
-        {
-            return 2;
         }
 
         public string GetStringRepresentation()
@@ -27,7 +15,7 @@ namespace Calculator
             return "log";
         }
 
-        public IFunction NewFunction()
+        public IFunction NewInstance()
         {
             return new Log10Function();
         }
