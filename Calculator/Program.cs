@@ -21,7 +21,13 @@ namespace Calculator
             Application.SetCompatibleTextRenderingDefault(false);
 
             var calculator = new BasicCalculator(_allowedSigns, _allowedFunctions);
-            Application.Run(new MainForm(calculator));
+
+            string pathToExecutable = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            string nameOfFile = "History.txt";
+            string fullFilePath = pathToExecutable + "\\" + nameOfFile;
+            var fileLogger = new FileLogger(fullFilePath);
+            
+            Application.Run(new MainForm(calculator, fileLogger));
         }
     }
 }
