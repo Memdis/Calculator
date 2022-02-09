@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calculator.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,13 +32,36 @@ namespace Calculator
             _logger.Log(inputString, computedResultLabel.Text);
 
         //TODO logging errors?
-    }
+        }
 
         private void ShowPopUpError (Exception Ex)
         {
             String message = Ex.Message;
             String caption = "Error!";
             MessageBox.Show(message, caption, MessageBoxButtons.OK);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            
+            
+        }
+
+        /*private void AboutToolStripMenuItem(object sender, ToolStripItemClickedEventArgs e)
+        {
+            MessageBox.Show(e.ClickedItem.Text);
+        }*/
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        { 
+            var aboutBox = new AboutBox1();
+            aboutBox.Show();
+        }
+
+        private void supportedOperationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var supportedOperationForm = new SupportedOperations();
+            supportedOperationForm.Show();
         }
     }
 }
