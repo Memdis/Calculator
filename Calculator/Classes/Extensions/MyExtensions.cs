@@ -22,5 +22,15 @@ namespace ExtensionMethods
 
             return onlyAllowedChars;
         }
+
+        public static double DegToRad(this double num)
+        {
+            return (System.Math.PI / 180) * num;
+        }
+
+        public static double RadToDeg(this double num)
+        {
+            return (180 / System.Math.PI) * num;
+        }
     }
 }
