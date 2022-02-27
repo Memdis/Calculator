@@ -20,7 +20,7 @@ namespace Calculator
             }
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "cos";
         }

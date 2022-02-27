@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace Calculator
 {
     public class Equation : IEquation
@@ -18,7 +17,7 @@ namespace Calculator
         {
             var functionsAndSortedOperations = GetFunctionsAndSortedOperations();
             List<IFunction> functions = functionsAndSortedOperations.functions;
-            List<IOperation> sortedOperations = functionsAndSortedOperations.sortedOperations;
+            List<IOperation> sortedOperations = functionsAndSortedOperations.sortedOperations; 
 
             ExecuteFunctions(functions);
             ExecutOperations(sortedOperations);

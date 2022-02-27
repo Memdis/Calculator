@@ -5,6 +5,7 @@ using System.Globalization;
 
 namespace Calculator
 {
+
     public class BasicCalculator : ICalculator
     {
         private readonly IEnumerable<IOperation> _allowedOperations = new List<IOperation>();

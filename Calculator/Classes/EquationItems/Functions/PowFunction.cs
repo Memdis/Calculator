@@ -11,7 +11,7 @@ namespace Calculator
             return Math.Pow(BaseEquation.Calculate(), Equation.Calculate());
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "^";
         }

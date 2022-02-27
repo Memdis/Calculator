@@ -12,7 +12,7 @@
             return 1;
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "/";
         }

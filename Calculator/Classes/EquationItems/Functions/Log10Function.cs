@@ -10,7 +10,7 @@ namespace Calculator
             return Math.Log10(Equation.Calculate());
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "log";
         }

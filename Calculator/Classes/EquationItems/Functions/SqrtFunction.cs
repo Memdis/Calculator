@@ -10,7 +10,7 @@ namespace Calculator
             return Math.Sqrt(Equation.Calculate());
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "sqrt";
         }
