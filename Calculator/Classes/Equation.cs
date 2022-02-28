@@ -52,7 +52,7 @@ namespace Calculator
         {
             for (int i = 0; i < functions.Count; i++)
             {
-                double functionResult = functions[i].Execute();
+                double functionResult = functions[i].Execute(this);
 
                 Items[functions[i].Index] = functionResult;
             }

@@ -80,7 +80,7 @@ namespace Calculator
                             i += itemStringRepresentation.Length;
                             string subString = inputString.Substring(i);
                             var subEquationAndNewIndex = ConvertParenthesisToEquation(subString);
-                            ((IFunction)item).Equation = subEquationAndNewIndex.subEquation;
+                            //((IFunction)item).Equation = subEquationAndNewIndex.subEquation;
 
                             if (item is IFunctionBaseEq)
                             {

@@ -6,9 +6,45 @@ using ExtensionMethods;
 
 namespace Calculator
 {
-    public static class StringToEquationItemsHelper
+    public static class EquationHelper
     {
-        public static Equation ExtractEquation(string inputString)
+        public static IEquation GetEquation(int startIndex, int eqIndexShift, IEquation equation)
+        {
+            if (equation == null)
+            {
+                throw new ArgumentNullException("Equation is null!"); //TODO popup error
+            }
+
+            var eq = equation.Items[startIndex + eqIndexShift];
+
+            equation.Items.RemoveAt(startIndex + eqIndexShift);
+            UpdateIndexes(startIndex + eqIndexShift, equation);
+
+            if (eq is IEquation)
+            {
+                return (IEquation)eq;
+            }
+            else if (eq is double)
+            {
+                return new Equation(new List<object> { eq });
+            }
+
+            throw new ArgumentException("Expected equation but received something else!"); //TODO popup error
+        }
+
+        private static void UpdateIndexes(int indexStart, IEquation equation)
+        {
+            for (int i = indexStart; i < equation.Items.Count; i++)
+            {
+                object item = equation.Items[i];
+                if (item is ExecutableEquationItem)
+                {
+                    ((ExecutableEquationItem)item).Index -= 1;
+                }
+            }
+        }
+
+        public static Equation ExtractItems(string inputString)
         {
             List<object> items = new List<object>();
             string stringToCheck = string.Empty;
@@ -52,8 +88,19 @@ namespace Calculator
                 if (matchedFunctions.Count() == 1)
                 {
                     var item = matchedFunctions.First();
-                    item.Index = i;
-                    items.Add(item);
+                    ExecutableEquationItem itemToAdd = null;
+
+                    if (item is IFunction)
+                    {
+                        itemToAdd = (ExecutableEquationItem)((IFunction)item).NewInstance();
+                    }
+                    else if (item is IOperation)
+                    {
+                        itemToAdd = (ExecutableEquationItem)((IOperation)item).NewInstance();
+                    }
+
+                    itemToAdd.Index = items.Count;
+                    items.Add(itemToAdd);
                     stringToCheck = string.Empty;
                     continue;
                 }
@@ -68,7 +115,7 @@ namespace Calculator
                     stringToCheck = string.Empty;
                 }
             }
-            
+
             return new Equation(items);
         }
 
@@ -97,7 +144,7 @@ namespace Calculator
             }
 
             string subString = inputStaringWithLeftParenthesis.Substring(1, endIndex - 1);
-            IEquation subEquation = ExtractEquation(subString);
+            IEquation subEquation = ExtractItems(subString);
             return (subEquation, endIndex);
         }
     }

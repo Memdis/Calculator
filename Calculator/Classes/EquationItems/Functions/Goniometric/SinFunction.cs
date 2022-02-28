@@ -5,18 +5,18 @@ namespace Calculator
 {
     public class SinFunction : ExecutableEquationItem, IFunction
     {
-        public IEquation Equation { get; set; }
-        public double Execute()
+        public double Execute(IEquation eqFuncIsPartOf)
         {
-            double eQResult = Equation.Calculate();
+            var eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+            double result = eq.Calculate();
 
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {
-                return Math.Sin(eQResult.DegToRad());
+                return Math.Sin(result.DegToRad());
             }
             else
             {
-                return Math.Sin(eQResult);
+                return Math.Sin(result);
             }
         }
 

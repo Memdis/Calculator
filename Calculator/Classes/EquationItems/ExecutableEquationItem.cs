@@ -12,7 +12,5 @@
         {
             return "String representation not implemented";
         }
-
-        
     }
 }

@@ -28,9 +28,10 @@ namespace Calculator
         {          
             String inputString = inputFieldTextBox.Text;
 
-            var equation = StringToEquationItemsHelper.ExtractEquation(inputString);
+            /*var equation = EquationHelper.ExtractEquation(inputString);
             string outputString = string.Empty;
 
+            
             subMethod(equation);
 
             void subMethod(Equation eq)
@@ -50,13 +51,12 @@ namespace Calculator
                         subMethod((Equation)item);
                     }
                 }
-            }
-
+            }*/
             
 
            // computedResultLabel.Text = outputString;
             computedResultLabel.Text = _calculator.Calculate(inputString);
-
+            //EquationHelper.NullEquation();
 
             _logger.Log(inputString, computedResultLabel.Text);
 

@@ -8,7 +8,7 @@ namespace Calculator
     {
         public string Calculate(string inputString)
         {
-            var equation = StringToEquationItemsHelper.ExtractEquation(inputString);
+            var equation = EquationHelper.ExtractItems(inputString);
 
             double result = equation.Calculate();
 

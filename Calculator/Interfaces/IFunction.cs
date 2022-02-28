@@ -2,11 +2,10 @@
 {
     public interface IFunction
     {
-        double Execute();
+        double Execute(IEquation eqFuncIsPartOf);
         string GetStringRepresentation();
         int GetPriority();
         int Index { get; set; }
         IFunction NewInstance();
-        public IEquation Equation { get; set; }
     }
 }
