@@ -3,15 +3,16 @@ namespace Calculator
 {
     public class PowFunction : ExecutableEquationItem, IFunctionBaseEq
     {
-        public IEquation Equation { get ; set; }
         public IEquation BaseEquation { get ; set ; }
 
-        public double Execute()
+        public double Execute(IEquation eqFuncIsPartOf)
         {
-            return Math.Pow(BaseEquation.Calculate(), Equation.Calculate());
+            var eqBase = EquationHelper.GetEquation(Index, -1, eqFuncIsPartOf);
+            var eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+            return Math.Pow(eqBase.Calculate(), eq.Calculate());
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "^";
         }

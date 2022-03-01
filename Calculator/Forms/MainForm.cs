@@ -27,7 +27,36 @@ namespace Calculator
         private void computeButton_Click(object sender, EventArgs e)
         {          
             String inputString = inputFieldTextBox.Text;
+
+            /*var equation = EquationHelper.ExtractEquation(inputString);
+            string outputString = string.Empty;
+
+            
+            subMethod(equation);
+
+            void subMethod(Equation eq)
+            {
+                foreach (var item in eq.Items)
+                {
+                    if (item is ExecutableEquationItem)
+                    {
+                        outputString += ((ExecutableEquationItem)item).GetStringRepresentation();
+                    }
+                    else if (item is double)
+                    {
+                        outputString += (double)item;
+                    }
+                    else if (item is Equation)
+                    {
+                        subMethod((Equation)item);
+                    }
+                }
+            }*/
+            
+
+           // computedResultLabel.Text = outputString;
             computedResultLabel.Text = _calculator.Calculate(inputString);
+            //EquationHelper.NullEquation();
 
             _logger.Log(inputString, computedResultLabel.Text);
 

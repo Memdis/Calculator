@@ -15,7 +15,7 @@ namespace Calculator.Forms
             "*\r\n" +
             "/\r\n" +
             "sqrt(x)\r\n" +
-            "x^(y) or (x)^(y)\r\n" +
+            "(x)^(y)\r\n" +
             "log(x)\r\n" +
             "sin(x)\r\n" +
             "cos(x)\r\n" +

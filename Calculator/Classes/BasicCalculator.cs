@@ -5,6 +5,7 @@ using System.Globalization;
 
 namespace Calculator
 {
+
     public class BasicCalculator : ICalculator
     {
         private readonly IEnumerable<IOperation> _allowedOperations = new List<IOperation>();
@@ -79,7 +80,7 @@ namespace Calculator
                             i += itemStringRepresentation.Length;
                             string subString = inputString.Substring(i);
                             var subEquationAndNewIndex = ConvertParenthesisToEquation(subString);
-                            ((IFunction)item).Equation = subEquationAndNewIndex.subEquation;
+                            //((IFunction)item).Equation = subEquationAndNewIndex.subEquation;
 
                             if (item is IFunctionBaseEq)
                             {

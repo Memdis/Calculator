@@ -4,13 +4,13 @@ namespace Calculator
 {
     public class SqrtFunction : ExecutableEquationItem, IFunction
     {
-        public IEquation Equation { get; set; }
-        public double Execute()
+        public double Execute(IEquation eqFuncIsPartOf)
         {
-            return Math.Sqrt(Equation.Calculate());
+            var eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+            return Math.Sqrt(eq.Calculate());
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "sqrt";
         }

@@ -7,5 +7,10 @@
         {
             return ExecutableEquationItemPriority.GetPriority(this);
         }
+
+        public virtual string GetStringRepresentation()
+        {
+            return "String representation not implemented";
+        }
     }
 }

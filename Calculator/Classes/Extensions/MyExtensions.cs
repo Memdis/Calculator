@@ -32,5 +32,20 @@ namespace ExtensionMethods
         {
             return (180 / System.Math.PI) * num;
         }
+
+        public static bool TryParseIfFailsOutsUnchangedNum(this double num, string toParse, out double number)
+        {
+            double returnNum = num;
+            var parseSuccessful = double.TryParse(toParse, out returnNum);
+
+            if (parseSuccessful)
+            {
+                number = returnNum;
+                return parseSuccessful;
+            }
+
+            number = num;
+            return parseSuccessful;
+        }
     }
 }

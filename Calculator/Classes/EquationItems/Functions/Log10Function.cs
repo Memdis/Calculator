@@ -4,13 +4,13 @@ namespace Calculator
 {
     public class Log10Function : ExecutableEquationItem, IFunction
     {
-        public IEquation Equation { get; set; }
-        public double Execute()
+        public double Execute(IEquation eqFuncIsPartOf)
         {
-            return Math.Log10(Equation.Calculate());
+            var eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+            return Math.Log10(eq.Calculate());
         }
 
-        public string GetStringRepresentation()
+        public override string GetStringRepresentation()
         {
             return "log";
         }
