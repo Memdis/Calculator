@@ -5,7 +5,7 @@ namespace Calculator
 {
     public class Equation : IEquation
     {
-        public List<object> Items { get; private set; }
+        public List<object> Items { get; set; }
         public int Index { get; set; }
 
         public Equation(List<object> items)
@@ -25,7 +25,7 @@ namespace Calculator
             return GetEquationResult();
         }
 
-        double GetEquationResult()
+        private double GetEquationResult()
         {
             if (Items.Count <= 0)
             {
@@ -35,7 +35,14 @@ namespace Calculator
             if (Items[0] is IEquation  )
             {
                 IEquation equation = (IEquation)Items[0];
-                return Convert.ToDouble(equation.Calculate());
+                try
+                {
+                    return Convert.ToDouble(equation.Calculate());
+                }
+                catch (Exception)
+                {
+                    throw new FormatException("Wrong input format!"); //TODO pupup window
+                }
             }
 
             try
