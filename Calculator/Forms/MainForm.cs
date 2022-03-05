@@ -13,14 +13,12 @@ namespace Calculator
 {
     public partial class MainForm : Form
     {
-        private readonly ICalculator _calculator;
         private readonly ILogger _logger;
-        public MainForm(ICalculator calculator, ILogger logger)
+        public MainForm(ILogger logger)
         {
             InitializeComponent();
             computedResultLabel.Text = "0";
 
-            _calculator = calculator;
             _logger = logger;
         }
 
@@ -28,35 +26,9 @@ namespace Calculator
         {          
             String inputString = inputFieldTextBox.Text;
 
-            /*var equation = EquationHelper.ExtractEquation(inputString);
-            string outputString = string.Empty;
-
-            
-            subMethod(equation);
-
-            void subMethod(Equation eq)
-            {
-                foreach (var item in eq.Items)
-                {
-                    if (item is ExecutableEquationItem)
-                    {
-                        outputString += ((ExecutableEquationItem)item).GetStringRepresentation();
-                    }
-                    else if (item is double)
-                    {
-                        outputString += (double)item;
-                    }
-                    else if (item is Equation)
-                    {
-                        subMethod((Equation)item);
-                    }
-                }
-            }*/
-            
-
-           // computedResultLabel.Text = outputString;
-            computedResultLabel.Text = _calculator.Calculate(inputString);
-            //EquationHelper.NullEquation();
+            var equation = EquationHelper.ExtractItems(inputString);
+            double result = equation.Calculate();
+            computedResultLabel.Text = result.ToString();
 
             _logger.Log(inputString, computedResultLabel.Text);
 

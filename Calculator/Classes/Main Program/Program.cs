@@ -25,10 +25,9 @@ namespace Calculator
             AppSetUp();
 
             //var calculator = new BasicCalculator(_allowedSigns, _allowedFunctions);
-            var calculator = new Calculator();
             var fileLogger = new FileLogger(_filePath);
 
-            Application.Run(new MainForm(calculator, fileLogger));
+            Application.Run(new MainForm(fileLogger));
         }
 
         private static void AppSetUp()
