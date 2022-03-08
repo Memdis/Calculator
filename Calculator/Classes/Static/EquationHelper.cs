@@ -24,24 +24,40 @@ namespace Calculator
             {
                 return (IEquation)eq;
             }
-            else if (eq is double)
+            /*else if (eq is double)
             {
                 return new Equation(new List<object> { eq });
-            }
+            }*/
 
             throw new ArgumentException("Expected equation but received something else!"); //TODO popup error
         }
 
-        private static void UpdateIndexes(int indexStart, IEquation equation)
+        public static double GetNumber(int startIndex, int indexShift, IEquation equation)
         {
-            for (int i = indexStart; i < equation.Items.Count; i++)
+            if (equation == null)
             {
-                object item = equation.Items[i];
-                if (item is ExecutableEquationItem)
-                {
-                    ((ExecutableEquationItem)item).Index -= 1;
-                }
+                throw new ArgumentNullException("Equation is null!"); //TODO popup error
             }
+
+            if (equation.Items.Count <= startIndex + indexShift )
+            {
+                throw new IndexOutOfRangeException("Index is out of range!");//TODO popup error
+            }
+
+            var num = equation.Items[startIndex + indexShift];
+            //TODO check below:
+            //error pri "sqrt(-1)", "-1"
+
+            if (num is IEquation)
+            {
+                return ((IEquation)num).Calculate();
+            }
+            else if (num is double)
+            {
+                return (double)num;
+            }
+
+            throw new FormatException("Expected equation or double but received something else!"); //TODO popup error
         }
 
         public static Equation ExtractItems(string inputString)
@@ -89,13 +105,21 @@ namespace Calculator
                 {
                     var item = matchedFunctions.First();
                     ExecutableEquationItem itemToAdd = null;
-
+                    //TODO zrusit IOperation a operacie budu tiež iba IFunction
+                    //TODO empty space handling
                     if (item is IFunction)
                     {
                         itemToAdd = (ExecutableEquationItem)((IFunction)item).NewInstance();
                     }
                     else if (item is IOperation)
                     {
+                        AddToItemsIfIsLastChar(i);
+
+                        if (items.Count == 0)
+                        {
+                            continue;
+                        }
+
                         itemToAdd = (ExecutableEquationItem)((IOperation)item).NewInstance();
                     }
 
@@ -114,9 +138,30 @@ namespace Calculator
 
                     stringToCheck = string.Empty;
                 }
+
+                AddToItemsIfIsLastChar(i);
             }
 
             return new Equation(items);
+
+            void AddToItemsIfIsLastChar(int i)
+            {
+                if (i == inputString.Length - 1 && stringToCheck != string.Empty)
+                {
+                    items.Add(stringToCheck);
+                }
+            }
+        }
+        private static void UpdateIndexes(int indexStart, IEquation equation)
+        {
+            for (int i = indexStart; i < equation.Items.Count; i++)
+            {
+                object item = equation.Items[i];
+                if (item is ExecutableEquationItem)
+                {
+                    ((ExecutableEquationItem)item).Index -= 1;
+                }
+            }
         }
 
         private static (IEquation subEquation, int subEquationLength) ConvertParenthesisToEquation(string inputStaringWithLeftParenthesis)
