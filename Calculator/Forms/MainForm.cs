@@ -29,6 +29,10 @@ namespace Calculator
             var equation = EquationHelper.ExtractItems(inputString);
             double result = equation.Calculate();
             computedResultLabel.Text = result.ToString();
+            
+            /*var log = Math.Log10(Math.Abs(result));
+            var floor = Math.Floor(log);
+            Int32 test = Convert.ToInt32(floor);*/
 
             _logger.Log(inputString, computedResultLabel.Text);
 

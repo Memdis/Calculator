@@ -1,10 +1,10 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace Calculator.UnitTests
 {
     [TestFixture]
-    public class EquationTests
+    public class EquationHelperTests
     {
         private static object[] eqLists =
         {
@@ -21,7 +21,7 @@ namespace Calculator.UnitTests
         [Test]
         [TestCaseSource(nameof(eqLists))]
         [Ignore("Equation class wont be tested")]
-        public void Calculate_ItemsHaveCorrectFormat_ReturnsCorrectResult(List<object> items, double expectedResult)
+        public void ExtractItems_ItemsHaveCorrectFormat_ReturnsCorrectResult(List<object> items, double expectedResult)
         {
             var eq = new Equation(items);
 
@@ -30,12 +30,11 @@ namespace Calculator.UnitTests
             Assert.That(result, Is.EqualTo(expectedResult));
         }
 
-        //calculate method::
-        //insert correct list of items -> returns correct number
-        //insert empty list of items -> throws argument exception "Incorrect format!" 
-        //insert list with incorrect item. i.e. type that it cannot work with, or incorrect string like "abc" -> throws argument exception "Incorrect format!"
-        //insert list with correct items but with wrong syntax. i.e. 5**4, *5, 4*5*, 5*)(4+4) -> throws argument exception "Incorrect format!"
-        //insert null list -> throws argument null exception "Something went wrong!"
+        //extract items cases:
+        //input string is null -> throws reference null exception
+        //input string is not null and has correct format -> return correct eqaution
+        //input string is not null and does not have correct format -> throws argument exception "Incorrect format!" 
+        //input string is not null but is empty -> return empty string
 
     }
 }

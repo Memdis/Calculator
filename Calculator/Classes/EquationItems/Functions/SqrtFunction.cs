@@ -6,7 +6,17 @@ namespace Calculator
     {
         public double Execute(IEquation eqFuncIsPartOf)
         {
-            var eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+            IEquation eq;
+
+            try
+            {
+                eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+            }
+            catch (Exception)
+            {
+                throw new FormatException("Sqrt function problem!");
+            }
+
             return Math.Sqrt(eq.Calculate());
         }
 

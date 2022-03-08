@@ -32,6 +32,11 @@ namespace Calculator
                 return 0;
             }
 
+            if (Items.Count > 1)
+            {
+                throw new FormatException("Wrong input format!"); //TODO pupup window
+            }
+
             if (Items[0] is IEquation  )
             {
                 IEquation equation = (IEquation)Items[0];
@@ -59,7 +64,16 @@ namespace Calculator
         {
             for (int i = 0; i < functions.Count; i++)
             {
-                double functionResult = functions[i].Execute(this);
+                double functionResult;
+
+                try
+                {
+                    functionResult = functions[i].Execute(this);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
 
                 Items[functions[i].Index] = functionResult;
             }
@@ -72,9 +86,18 @@ namespace Calculator
                 int operationIndex = sortedOperations[i].Index;
                 IOperation operationToExecute = (IOperation)Items[operationIndex];
 
-                double leftNumber = GetNumberForOperation(-1, operationIndex);
-                double rightNumber = GetNumberForOperation(1, operationIndex);
+                double leftNumber, rightNumber;
 
+                try
+                {
+                    leftNumber = EquationHelper.GetNumber(operationIndex, -1, this); //GetNumberForOperation(-1, operationIndex);
+                    rightNumber = EquationHelper.GetNumber(operationIndex, 1, this); //GetNumberForOperation(1, operationIndex);
+                }
+                catch (Exception)
+                {
+                    throw new FormatException("Wrong input format!"); //TODO pupup window
+                }
+                
                 double operationResult = operationToExecute.Execute(leftNumber, rightNumber);
 
                 for (int j = operationIndex + 1; j < Items.Count; j++)
@@ -87,26 +110,6 @@ namespace Calculator
 
                 Items[operationIndex - 1] = operationResult;
                 Items.RemoveRange(operationIndex, 2);
-            }
-
-            double GetNumberForOperation(int indexShift, int operationIndex)
-            {
-                if (Items[operationIndex + indexShift] is IEquation)
-                {
-                    IEquation equation = (IEquation)Items[operationIndex + indexShift];
-                    return equation.Calculate();
-                }
-                else
-                {
-                    try
-                    {
-                        return Convert.ToDouble(Items[operationIndex + indexShift]);
-                    }
-                    catch (Exception)
-                    {
-                        throw new FormatException("Format of input string is incorrect!");
-                    }
-                }
             }
         }
 
