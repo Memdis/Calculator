@@ -6,18 +6,18 @@ namespace Calculator
     {
         public double Execute(IEquation eqFuncIsPartOf)
         {
-            IEquation eq;
+            double num;
 
             try
             {
-                eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+                num = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
             }
             catch (Exception)
             {
                 throw new FormatException("Log function problem!");
             }
 
-            return Math.Log10(eq.Calculate());
+            return Math.Log10(num);
         }
 
         public override string GetStringRepresentation()

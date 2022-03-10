@@ -8,48 +8,28 @@ namespace Calculator
 {
     public static class EquationHelper
     {
-        public static IEquation GetEquation(int startIndex, int eqIndexShift, IEquation equation)
-        {
-            if (equation == null)
-            {
-                throw new ArgumentNullException("Equation is null!"); //TODO popup error
-            }
-
-            var eq = equation.Items[startIndex + eqIndexShift];
-
-            equation.Items.RemoveAt(startIndex + eqIndexShift);
-            UpdateIndexes(startIndex + eqIndexShift, equation);
-
-            if (eq is IEquation)
-            {
-                return (IEquation)eq;
-            }
-            /*else if (eq is double)
-            {
-                return new Equation(new List<object> { eq });
-            }*/
-
-            throw new ArgumentException("Expected equation but received something else!"); //TODO popup error
-        }
-
         public static double GetNumber(int startIndex, int indexShift, IEquation equation)
         {
+            int numIndex = startIndex + indexShift;
+
             if (equation == null)
             {
                 throw new ArgumentNullException("Equation is null!"); //TODO popup error
             }
 
-            if (equation.Items.Count <= startIndex + indexShift )
+            if (equation.Items.Count <= numIndex)
             {
                 throw new IndexOutOfRangeException("Index is out of range!");//TODO popup error
             }
 
-            var num = equation.Items[startIndex + indexShift];
+            var num = equation.Items[numIndex];
             //TODO check below:
             //error pri "sqrt(-1)", "-1"
 
             if (num is IEquation)
             {
+                //equation.Items.RemoveAt(numIndex);
+                //UpdateIndexes(numIndex, equation);
                 return ((IEquation)num).Calculate();
             }
             else if (num is double)

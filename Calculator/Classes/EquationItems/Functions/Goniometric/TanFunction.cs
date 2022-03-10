@@ -7,26 +7,24 @@ namespace Calculator
     {
         public double Execute(IEquation eqFuncIsPartOf)
         {
-            IEquation eq;
+            double num;
 
             try
             {
-                eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+                num = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
             }
             catch (Exception)
             {
                 throw new FormatException("Tan function problem!");
             }
 
-            double result = eq.Calculate();
-
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {
-                return Math.Tan(result.DegToRad());
+                return Math.Tan(num.DegToRad());
             }
             else
             {
-                return Math.Tan(result);
+                return Math.Tan(num);
             }
         }
 

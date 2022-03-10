@@ -7,27 +7,24 @@ namespace Calculator
     {
         public double Execute(IEquation eqFuncIsPartOf)
         {
-
-            IEquation eq;
+            double num;
 
             try
             {
-                eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+                num = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
             }
             catch (Exception)
             {
                 throw new FormatException("Sin function problem!");
             }
 
-            double result = eq.Calculate();
-
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {
-                return Math.Sin(result.DegToRad());
+                return Math.Sin(num.DegToRad());
             }
             else
             {
-                return Math.Sin(result);
+                return Math.Sin(num);
             }
         }
 

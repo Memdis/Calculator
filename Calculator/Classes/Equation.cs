@@ -64,18 +64,32 @@ namespace Calculator
         {
             for (int i = 0; i < functions.Count; i++)
             {
-                double functionResult;
+                int functionIndex = functions[i].Index;
+                int numOfItemsToDelete;
 
-                try
+                double functionResult = functions[i].Execute(this);
+
+                if (functions[i] is IFunctionBaseEq)
                 {
-                    functionResult = functions[i].Execute(this);
+                    numOfItemsToDelete = 2;
+                    Items[functions[i].Index - 1] = functionResult;
+                    Items.RemoveRange(functionIndex, 2);
                 }
-                catch (Exception e)
+                else
                 {
-                    throw e;
+                    numOfItemsToDelete = 1;
+                    Items[functions[i].Index] = functionResult;
+                    Items.RemoveRange(functionIndex + 1, 1);
                 }
 
-                Items[functions[i].Index] = functionResult;
+                for (int j = functionIndex; j < Items.Count; j++)
+                {
+                    object item = Items[j];
+                    if (item is ExecutableEquationItem)
+                    {
+                        ((ExecutableEquationItem)item).Index -= numOfItemsToDelete;
+                    }
+                }
             }
         }
 
@@ -85,22 +99,10 @@ namespace Calculator
             {
                 int operationIndex = sortedOperations[i].Index;
                 IOperation operationToExecute = (IOperation)Items[operationIndex];
-
-                double leftNumber, rightNumber;
-
-                try
-                {
-                    leftNumber = EquationHelper.GetNumber(operationIndex, -1, this); //GetNumberForOperation(-1, operationIndex);
-                    rightNumber = EquationHelper.GetNumber(operationIndex, 1, this); //GetNumberForOperation(1, operationIndex);
-                }
-                catch (Exception)
-                {
-                    throw new FormatException("Wrong input format!"); //TODO pupup window
-                }
                 
-                double operationResult = operationToExecute.Execute(leftNumber, rightNumber);
+                double operationResult = operationToExecute.Execute(this);
 
-                for (int j = operationIndex + 1; j < Items.Count; j++)
+                for (int j = operationIndex + 2; j < Items.Count; j++)
                 {
                     if (Items[j] is IOperation)
                     {
@@ -118,7 +120,7 @@ namespace Calculator
             List<IFunction> functions = new List<IFunction>();
             List<IOperation> sortedOperations = new List<IOperation>();
 
-            foreach (var item in Items)
+            foreach (var item in Items)//TODO linq
             {
                 if (item is IFunction)
                 {

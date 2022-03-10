@@ -7,26 +7,24 @@ namespace Calculator
     {
         public double Execute(IEquation eqFuncIsPartOf)
         {
-            IEquation eq;
+            double num;
 
             try
             {
-                eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+                num = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
             }
             catch (Exception)
             {
                 throw new FormatException("Cos function problem!");
             }
 
-            double result = eq.Calculate();
-
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {
-                return Math.Cos(result.DegToRad());
+                return Math.Cos(num.DegToRad());
             }
             else
             {
-                return Math.Cos(result);
+                return Math.Cos(num);
             }
         }
 

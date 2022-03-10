@@ -2,7 +2,7 @@
 {
     public interface IOperation
     {
-        double Execute(double firstNum, double secondNum);
+        double Execute(IEquation eqFuncIsPartOf);
         string GetStringRepresentation();
         int GetPriority();
         int Index { get; set; }
