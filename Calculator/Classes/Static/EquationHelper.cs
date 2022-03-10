@@ -23,13 +23,9 @@ namespace Calculator
             }
 
             var num = equation.Items[numIndex];
-            //TODO check below:
-            //error pri "sqrt(-1)", "-1"
 
             if (num is IEquation)
             {
-                //equation.Items.RemoveAt(numIndex);
-                //UpdateIndexes(numIndex, equation);
                 return ((IEquation)num).Calculate();
             }
             else if (num is double)

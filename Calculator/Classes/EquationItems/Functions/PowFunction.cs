@@ -7,18 +7,8 @@ namespace Calculator
 
         public double Execute(IEquation eqFuncIsPartOf)//TODO eqFuncIsPartOf je fakt blbý názov, zmeniť
         {
-            double numBase;
-            double num;
-
-            try
-            {
-                numBase = EquationHelper.GetNumber(Index, -1, eqFuncIsPartOf);
-                num = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
-            }
-            catch (Exception)
-            {
-                throw new FormatException("Pow function problem!"); //TODO popup window
-            }
+            double numBase = GetNum(eqFuncIsPartOf, -1, "pow function");
+            double num = GetNum(eqFuncIsPartOf, 1, "pow function");
             
             return Math.Pow(numBase, num);
         }

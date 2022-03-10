@@ -7,16 +7,7 @@ namespace Calculator
     {
         public double Execute(IEquation eqFuncIsPartOf)
         {
-            double num;
-
-            try
-            {
-                num = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
-            }
-            catch (Exception)
-            {
-                throw new FormatException("Tan function problem!");
-            }
+            double num = GetNum(eqFuncIsPartOf, 1, "tan function");
 
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {
