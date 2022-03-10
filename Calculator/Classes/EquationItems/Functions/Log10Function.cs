@@ -4,9 +4,9 @@ namespace Calculator
 {
     public class Log10Function : ExecutableEquationItem, IFunction
     {
-        public double Execute(IEquation eqFuncIsPartOf)
+        public double Execute(IEquation eqWhereFunctionBelongs)
         {
-            double num = GetNum(eqFuncIsPartOf, 1, "log function");
+            double num = GetNum(eqWhereFunctionBelongs, 1, "log function");
 
             return Math.Log10(num);
         }

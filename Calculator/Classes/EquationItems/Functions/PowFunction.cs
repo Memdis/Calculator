@@ -5,10 +5,10 @@ namespace Calculator
     {
         public IEquation BaseEquation { get ; set ; }
 
-        public double Execute(IEquation eqFuncIsPartOf)//TODO eqFuncIsPartOf je fakt blbý názov, zmeniť
+        public double Execute(IEquation eqWhereFunctionBelongs)
         {
-            double numBase = GetNum(eqFuncIsPartOf, -1, "pow function");
-            double num = GetNum(eqFuncIsPartOf, 1, "pow function");
+            double numBase = GetNum(eqWhereFunctionBelongs, -1, "pow function");
+            double num = GetNum(eqWhereFunctionBelongs, 1, "pow function");
             
             return Math.Pow(numBase, num);
         }

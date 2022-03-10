@@ -15,13 +15,13 @@ namespace Calculator
             return "String representation not implemented";
         }
 
-        protected double GetNum(IEquation eqFuncIsPartOf, int indexShift, string errorMessage)
+        protected double GetNum(IEquation eqWhereFunctionBelongs, int indexShift, string errorMessage)
         {
             double num;
 
             try
             {
-                num = EquationHelper.GetNumber(Index, indexShift, eqFuncIsPartOf);
+                num = EquationHelper.GetNumber(Index, indexShift, eqWhereFunctionBelongs);
             }
             catch
             {

@@ -5,9 +5,9 @@ namespace Calculator
 {
     public class SinFunction : ExecutableEquationItem, IFunction
     {
-        public double Execute(IEquation eqFuncIsPartOf)
+        public double Execute(IEquation eqWhereFunctionBelongs)
         {
-            double num = GetNum(eqFuncIsPartOf, 1, "sin function");
+            double num = GetNum(eqWhereFunctionBelongs, 1, "sin function");
 
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {

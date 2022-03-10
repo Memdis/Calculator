@@ -4,20 +4,10 @@ namespace Calculator
 {
     public class MinusOperation : ExecutableEquationItem, IOperation
     {
-        public double Execute(IEquation eqFuncIsPartOf)
+        public double Execute(IEquation eqWhereFunctionBelongs)
         {
-            double leftNum;
-            double rightNum;
-
-            try
-            {
-                leftNum = EquationHelper.GetNumber(Index, -1, eqFuncIsPartOf);
-                rightNum = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
-            }
-            catch (Exception)
-            {
-                throw new FormatException("Wrong input format!"); //TODO pupup window
-            }
+            double leftNum = GetNum(eqWhereFunctionBelongs, -1, "minus operation");
+            double rightNum = GetNum(eqWhereFunctionBelongs, 1, "minus operation");
 
             return leftNum - rightNum;
         }

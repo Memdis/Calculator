@@ -5,9 +5,9 @@ namespace Calculator
 {
     public class CosFunction : ExecutableEquationItem, IFunction
     {
-        public double Execute(IEquation eqFuncIsPartOf)
+        public double Execute(IEquation eqWhereFunctionBelongs)
         {
-            double num = GetNum(eqFuncIsPartOf, 1, "cos function");
+            double num = GetNum(eqWhereFunctionBelongs, 1, "cos function");
 
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {

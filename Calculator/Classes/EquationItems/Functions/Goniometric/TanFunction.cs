@@ -5,9 +5,9 @@ namespace Calculator
 {
     public class TanFunction : ExecutableEquationItem, IFunction
     {
-        public double Execute(IEquation eqFuncIsPartOf)
+        public double Execute(IEquation eqWhereFunctionBelongs)
         {
-            double num = GetNum(eqFuncIsPartOf, 1, "tan function");
+            double num = GetNum(eqWhereFunctionBelongs, 1, "tan function");
 
             if (Settings.UnitOfAngles == AngleUnit.Deg)
             {
