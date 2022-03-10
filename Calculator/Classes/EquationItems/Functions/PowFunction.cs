@@ -7,20 +7,20 @@ namespace Calculator
 
         public double Execute(IEquation eqFuncIsPartOf)//TODO eqFuncIsPartOf je fakt blbý názov, zmeniť
         {
-            IEquation eqBase;
-            IEquation eq;
+            double numBase;
+            double num;
 
             try
             {
-                eqBase = EquationHelper.GetEquation(Index, -1, eqFuncIsPartOf);
-                eq = EquationHelper.GetEquation(Index, 1, eqFuncIsPartOf);
+                numBase = EquationHelper.GetNumber(Index, -1, eqFuncIsPartOf);
+                num = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
             }
             catch (Exception)
             {
                 throw new FormatException("Pow function problem!"); //TODO popup window
             }
             
-            return Math.Pow(eqBase.Calculate(), eq.Calculate());
+            return Math.Pow(numBase, num);
         }
 
         public override string GetStringRepresentation()

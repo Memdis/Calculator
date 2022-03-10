@@ -1,10 +1,25 @@
-﻿namespace Calculator
+﻿using System;
+
+namespace Calculator
 {
     public class MultOperation : ExecutableEquationItem, IOperation
     {
-        public double Execute(double firstNum, double secondNum)
+        public double Execute(IEquation eqFuncIsPartOf)
         {
-            return firstNum * secondNum;
+            double leftNum;
+            double rightNum;
+
+            try
+            {
+                leftNum = EquationHelper.GetNumber(Index, -1, eqFuncIsPartOf);
+                rightNum = EquationHelper.GetNumber(Index, 1, eqFuncIsPartOf);
+            }
+            catch (Exception)
+            {
+                throw new FormatException("Wrong input format!"); //TODO pupup window
+            }
+
+            return leftNum * rightNum;
         }
 
         public override int GetPriority()
