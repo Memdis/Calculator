@@ -51,17 +51,23 @@ namespace Calculator
             String caption = "Error!";
             MessageBox.Show(message, caption, MessageBoxButtons.OK);
         }
-
+        
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         { 
-            var aboutBox = new AboutBox1();
-            aboutBox.Show();
+            var aboutBoxForm = new AboutBox();
+            aboutBoxForm.Show();
         }
 
         private void supportedOperationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var supportedOperationForm = new SupportedOperations();
             supportedOperationForm.Show();
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var optionsForm = new Options();
+            optionsForm.Show();
         }
     }
 }

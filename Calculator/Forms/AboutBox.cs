@@ -7,9 +7,9 @@ using System.Windows.Forms;
 
 namespace Calculator.Forms
 {
-    partial class AboutBox1 : Form
+    partial class AboutBox : Form
     {
-        public AboutBox1()
+        public AboutBox()
         {
             InitializeComponent();
             this.Text = String.Format("About {0}", AssemblyTitle);
