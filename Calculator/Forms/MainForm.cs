@@ -23,9 +23,9 @@ namespace Calculator
             textBoxResult.Text = "0";
             textBoxResult.ReadOnly = true;
             textBoxResult.BorderStyle = 0;
-            textBoxResult.BackColor = this.BackColor;
+            textBoxResult.BackColor = BackColor;
             textBoxResult.TabStop = false;
-            textBoxResult.Multiline = true; // If needed
+            textBoxResult.Multiline = true;
         }
 
         private void computeButton_Click(object sender, EventArgs e)
@@ -51,17 +51,6 @@ namespace Calculator
             String caption = "Error!";
             MessageBox.Show(message, caption, MessageBoxButtons.OK);
         }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            
-            
-        }
-
-        /*private void AboutToolStripMenuItem(object sender, ToolStripItemClickedEventArgs e)
-        {
-            MessageBox.Show(e.ClickedItem.Text);
-        }*/
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         { 
