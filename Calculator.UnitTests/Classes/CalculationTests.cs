@@ -53,9 +53,6 @@ namespace Calculator.UnitTests
             Assert.That(result, Is.EqualTo(expectedNum).Within(tolerance));
         }
 
-        //input string conains undefined parts, like "abc", wrognly typed functions like "sni()", "**" -> throws format exception "Incorrect format!"
-        //delenie 0 a pod. sqrt(0) ainé nesprávne stavy
-
         private static string[] wrongFormat =
         {
             "+", "-", "*", "/", "++", "--", "**", "//", "*/", "-+", "*-", "1+1_", "§1+1",

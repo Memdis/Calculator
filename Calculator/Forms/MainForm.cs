@@ -17,9 +17,15 @@ namespace Calculator
         public MainForm(ILogger logger)
         {
             InitializeComponent();
-            computedResultLabel.Text = "0";
 
             _logger = logger;
+
+            textBoxResult.Text = "0";
+            textBoxResult.ReadOnly = true;
+            textBoxResult.BorderStyle = 0;
+            textBoxResult.BackColor = this.BackColor;
+            textBoxResult.TabStop = false;
+            textBoxResult.Multiline = true; // If needed
         }
 
         private void computeButton_Click(object sender, EventArgs e)
@@ -28,13 +34,13 @@ namespace Calculator
 
             var equation = EquationHelper.ExtractItems(inputString);
             double result = equation.Calculate();
-            computedResultLabel.Text = result.ToString();
-            
+            textBoxResult.Text = result.ToString();
+
             /*var log = Math.Log10(Math.Abs(result));
             var floor = Math.Floor(log);
             Int32 test = Convert.ToInt32(floor);*/
 
-            _logger.Log(inputString, computedResultLabel.Text);
+            _logger.Log(inputString, textBoxResult.Text);
 
         //TODO logging errors?
         }

@@ -81,7 +81,7 @@ namespace Calculator
                 {
                     var item = matchedFunctions.First();
                     ExecutableEquationItem itemToAdd = null;
-                    //TODO zrusit IOperation a operacie budu tiež iba IFunction
+                    //TODO zrusit IOperation a operacie budu tiež iba IFunction - je to vlastne dobrý nápad? :D
                     //TODO empty space handling
                     if (item is IFunction)
                     {
@@ -128,17 +128,6 @@ namespace Calculator
                 }
             }
         }
-        private static void UpdateIndexes(int indexStart, IEquation equation)
-        {
-            for (int i = indexStart; i < equation.Items.Count; i++)
-            {
-                object item = equation.Items[i];
-                if (item is ExecutableEquationItem)
-                {
-                    ((ExecutableEquationItem)item).Index -= 1;
-                }
-            }
-        }
 
         private static (IEquation subEquation, int subEquationLength) ConvertParenthesisToEquation(string inputStaringWithLeftParenthesis)
         {
@@ -170,29 +159,3 @@ namespace Calculator
         }
     }
 }
-
-//1
-//1+1
-//1,1+1
-//1,1+1,1
-//1+sin(1)
-//1,1+sin(1)
-//1,1+sin(1,1)
-//1,1+sin(1+1)
-//1,1+sin(1,1+1,1)
-//1,1+sin(1,1+1,1)*2
-//1,1+sin(1,1+1,1)*2,2
-//1,1+sin(1,1+1,1+(sin(1,1+1,1)))*2,2
-//sin(1)
-//sin(1,1)
-//sin(1+1)
-//sin(1,1+1)
-//sin(1,1+1,1)
-//sin(1,1+1,1+(sin(1,1+1,1)))
-//sin(1,1+1,1)*sin(1,1+1,1)
-//(2)^(2)
-//(2,2)^(2,2)
-//(2,2)^(2,2)*(2,2)^(2,2)
-//1,1+sin(1,1+1,1+(sin(1,1+1,1)))*2,2+(2,2)^(2,2)*tan(1)
-//sin-1(0,3)
-

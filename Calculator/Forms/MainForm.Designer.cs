@@ -32,7 +32,6 @@ namespace Calculator
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.inputFieldLabel = new System.Windows.Forms.Label();
             this.inputFieldTextBox = new System.Windows.Forms.TextBox();
-            this.computedResultLabel = new System.Windows.Forms.Label();
             this.computeButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +47,7 @@ namespace Calculator
             this.supportedOperationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBoxResult = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,18 +64,8 @@ namespace Calculator
             // 
             this.inputFieldTextBox.Location = new System.Drawing.Point(12, 52);
             this.inputFieldTextBox.Name = "inputFieldTextBox";
-            this.inputFieldTextBox.Size = new System.Drawing.Size(505, 23);
+            this.inputFieldTextBox.Size = new System.Drawing.Size(728, 23);
             this.inputFieldTextBox.TabIndex = 1;
-            // 
-            // computedResultLabel
-            // 
-            this.computedResultLabel.AutoSize = true;
-            this.computedResultLabel.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.computedResultLabel.Location = new System.Drawing.Point(12, 107);
-            this.computedResultLabel.Name = "computedResultLabel";
-            this.computedResultLabel.Size = new System.Drawing.Size(13, 15);
-            this.computedResultLabel.TabIndex = 3;
-            this.computedResultLabel.Text = "0";
             // 
             // computeButton
             // 
@@ -96,7 +86,7 @@ namespace Calculator
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(555, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(752, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -194,13 +184,21 @@ namespace Calculator
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // textBoxResult
+            // 
+            this.textBoxResult.Location = new System.Drawing.Point(12, 109);
+            this.textBoxResult.Name = "textBoxResult";
+            this.textBoxResult.Size = new System.Drawing.Size(728, 23);
+            this.textBoxResult.TabIndex = 7;
+            this.textBoxResult.Text = "0";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(555, 309);
+            this.ClientSize = new System.Drawing.Size(752, 309);
+            this.Controls.Add(this.textBoxResult);
             this.Controls.Add(this.computeButton);
-            this.Controls.Add(this.computedResultLabel);
             this.Controls.Add(this.inputFieldTextBox);
             this.Controls.Add(this.inputFieldLabel);
             this.Controls.Add(this.menuStrip1);
@@ -218,7 +216,6 @@ namespace Calculator
 
         private System.Windows.Forms.Label inputFieldLabel;
         private System.Windows.Forms.TextBox inputFieldTextBox;
-        private System.Windows.Forms.Label computedResultLabel;
         private System.Windows.Forms.Button computeButton;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -235,6 +232,7 @@ namespace Calculator
         private System.Windows.Forms.ToolStripMenuItem advancedCalculatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem supportedOperationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem advancedToolStripMenuItem;
+        private System.Windows.Forms.TextBox textBoxResult;
     }
 }
 
