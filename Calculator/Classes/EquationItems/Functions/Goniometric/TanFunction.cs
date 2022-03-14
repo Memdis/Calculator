@@ -9,7 +9,7 @@ namespace Calculator
         {
             double num = GetNum(eqWhereFunctionBelongs, 1, "tan function");
 
-            if (Settings.UnitOfAngles == AngleUnit.Deg)
+            if (Settings.AngleUnits == AngleUnit.Deg)
             {
                 return Math.Tan(num.DegToRad());
             }

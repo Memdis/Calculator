@@ -13,6 +13,23 @@ namespace Calculator.Forms
         public Options()
         {
             InitializeComponent();
+
+            comboBoxAngleUnits.SelectedIndex = (int)Settings.AngleUnits;
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.AngleUnits = comboBoxAngleUnits.SelectedIndex;
+            Properties.Settings.Default.Save();
+
+            Settings.LoadSettings();
+            
+            Close();
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -20,14 +20,17 @@ namespace Calculator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            AppSetUp();
+            Settings.LoadSettings();
+
+            OperationsAndFunctionsSetUp();
+            HistoryFilePathSetUp();
 
             var fileLogger = new FileLogger(_filePath);
 
             Application.Run(new MainForm(fileLogger));
         }
 
-        private static void AppSetUp()
+        private static void OperationsAndFunctionsSetUp()
         {
             List<IOperation> _allowedOperations = new List<IOperation>() { new PlusOperation(), new MinusOperation(), new MultOperation(), new DivOperation() };
             List<IFunction> _allowedFunctions = new List<IFunction>() { new Log10Function(), new SqrtFunction(), new PowFunction(), new SinFunction(), new CosFunction(), new TanFunction() };
@@ -48,8 +51,10 @@ namespace Calculator
 
             ExecutableFunctions.AllExeEqItems.AddRange(allExeEqItems);
             ExecutableFunctions.AllExeEqItemsRepresentation.AddRange(allExeEqItemsRepresentation);
+        }
 
-
+        private static void HistoryFilePathSetUp()
+        {
             string pathToExecutable = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             string nameOfFile = "History.txt";
             _filePath = pathToExecutable + "\\" + nameOfFile;

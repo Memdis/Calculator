@@ -1,8 +1,8 @@
 ﻿namespace Calculator
 {
-    public enum AngleUnit
+    public enum AngleUnit //order should be same as Options -> Angle Units!
     {
-        Deg,
-        Rad
+        Rad,
+        Deg
     }
 }
