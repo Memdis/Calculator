@@ -9,7 +9,7 @@ namespace Calculator
         {
             double num = GetNum(eqWhereFunctionBelongs, 1, "sin function");
 
-            if (Settings.AngleUnits == AngleUnit.Deg)
+            if (Settings.AngleUnits == AngleUnits.Deg)
             {
                 return Math.Sin(num.DegToRad());
             }

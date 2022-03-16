@@ -9,7 +9,7 @@ namespace Calculator
         {
             double num = GetNum(eqWhereFunctionBelongs, 1, "cos function");
 
-            if (Settings.AngleUnits == AngleUnit.Deg)
+            if (Settings.AngleUnits == AngleUnits.Deg)
             {
                 return Math.Cos(num.DegToRad());
             }

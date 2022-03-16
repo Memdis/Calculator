@@ -7,8 +7,6 @@ namespace Calculator.UnitTests
     [TestFixture]
     public class CalculationTests
     {
-        
-
         [Test]
         public void Calculation_InputStringIsNull_ThrowsNullReferenceException()
         {
@@ -80,6 +78,8 @@ namespace Calculator.UnitTests
             new object[] { "(2)^(3)", 8.0},
             new object[] { "(-2)^(4)", 16.0},
             new object[] { "(-2)^(3)", -8.0},
+            new object[] { "-2^(3)", -8.0},
+            new object[] { "-2^3*2", -16.0},
             new object[] { "sqrt(2)", 1.41421356237309505},
             new object[] { "1+1", 2.0 },
             new object[] { "1+0", 1.0 },
@@ -122,18 +122,16 @@ namespace Calculator.UnitTests
         [SetUp]
         public void SetUp()
         {
-            List<IOperation> _allowedSigns;
-            List<IFunction> _allowedFunctions;
-            _allowedSigns = new List<IOperation>() { new PlusOperation(), new MinusOperation(), new MultOperation(), new DivOperation() };
-            _allowedFunctions = new List<IFunction>() { new Log10Function(), new SqrtFunction(), new PowFunction(), new SinFunction(), new CosFunction(), new TanFunction() };
+            List<IOperation> _allowedOperations = new List<IOperation>() { new PlusOperation(), new MinusOperation(), new MultOperation(), new DivOperation() };
+            List<IFunction> _allowedFunctions = new List<IFunction>() { new Log10Function(), new SqrtFunction(), new PowFunction(), new SinFunction(), new CosFunction(), new TanFunction() };
 
             List<ExecutableEquationItem> allExeEqItems = new List<ExecutableEquationItem>();
             List<string> allExeEqItemsRepresentation = new List<string>();
 
-            foreach (var sign in _allowedSigns)
+            foreach (var operation in _allowedOperations)
             {
-                allExeEqItems.Add((ExecutableEquationItem)sign);
-                allExeEqItemsRepresentation.Add(sign.GetStringRepresentation());
+                allExeEqItems.Add((ExecutableEquationItem)operation);
+                allExeEqItemsRepresentation.Add(operation.GetStringRepresentation());
             }
             foreach (var function in _allowedFunctions)
             {

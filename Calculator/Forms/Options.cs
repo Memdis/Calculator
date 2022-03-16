@@ -15,14 +15,12 @@ namespace Calculator.Forms
             InitializeComponent();
 
             comboBoxAngleUnits.SelectedIndex = (int)Settings.AngleUnits;
+            comboBoxDecimalPoint.SelectedIndex = (int)Settings.DecimalSeparator;
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.AngleUnits = comboBoxAngleUnits.SelectedIndex;
-            Properties.Settings.Default.Save();
-
-            Settings.LoadSettings();
+            Settings.SaveSettings(comboBoxAngleUnits.SelectedIndex, comboBoxDecimalPoint.SelectedIndex);
             
             Close();
         }

@@ -58,7 +58,7 @@ namespace Calculator
 
                     try
                     {
-                        items.Add(double.Parse(stringToCheck));
+                        items.Add(number);
                     }
                     catch (Exception)
                     {

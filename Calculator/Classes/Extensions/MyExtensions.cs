@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Calculator;
 
 namespace ExtensionMethods
 {
@@ -35,8 +36,20 @@ namespace ExtensionMethods
 
         public static bool TryParseIfFailsOutsUnchangedNum(this double num, string toParse, out double number)
         {
+            var currentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            var numberFormat = (System.Globalization.NumberFormatInfo)currentCulture.NumberFormat.Clone();
+
+            if (Settings.DecimalSeparator == DecimalSeparator.Comma)
+            {
+                numberFormat.NumberDecimalSeparator = ",";
+            }
+            else
+            {
+                numberFormat.NumberDecimalSeparator = ".";
+            }
+            
             double returnNum = num;
-            var parseSuccessful = double.TryParse(toParse, out returnNum);
+            var parseSuccessful = double.TryParse(toParse, System.Globalization.NumberStyles.Float, numberFormat, out returnNum);
 
             if (parseSuccessful)
             {
