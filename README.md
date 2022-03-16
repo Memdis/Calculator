@@ -15,12 +15,10 @@ e.g. you can write 2*(-1,15+sin(0,4))/(2)^(3)-log(4) and you should get result -
 - All calculations are stored in local history file where .exe is located (no logging when error occurs)
 - Supported methematical oeprations: +, -, *, /
 - Supported functions: sqrt, ^, log, sin, cos, tan, parenthesis ()
-- Decimal point is set to system setting
-- Angle units are set to rad
+- Added option for setting of decimal separator (, or .)
+- Added option for setting of angle units (rad or deg)
 
 ## Features (to be implemented)
-- Option for setting decimal point (, or .)
-- Option for setting angle units (rad or deg)
 - Option for setting precision (for final result and also for each individual calculation)
 - Every operation and function has own button (pressing button will write proper syntax of function in input field)
 - Advanced calcualtor - multiple input fields, each has its name that can be used in other input fields. Name can be set by user.
