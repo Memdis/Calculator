@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Calculator;
+using System;
 
 namespace ExtensionMethods
 {
@@ -34,26 +34,21 @@ namespace ExtensionMethods
             return (180 / System.Math.PI) * num;
         }
 
-        public static bool TryParseIfFailsOutsUnchangedNum(this double num, string toParse, out double number)
+        public static bool TryParseIfFailsOutsUnchangedNum(this double num, string toParse, out double number, string decimalSeparator)
         {
+            if (decimalSeparator.Length != 1)
+            {
+                throw new ArgumentException("Decimal separator has incorrect format!");
+            }
+
             var currentCulture = System.Globalization.CultureInfo.InvariantCulture;
             var numberFormat = (System.Globalization.NumberFormatInfo)currentCulture.NumberFormat.Clone();
+            numberFormat.NumberDecimalSeparator = decimalSeparator;
 
-            if (Settings.DecimalSeparator == DecimalSeparator.Comma)
-            {
-                numberFormat.NumberDecimalSeparator = ",";
-            }
-            else
-            {
-                numberFormat.NumberDecimalSeparator = ".";
-            }
-            
-            double returnNum = num;
-            var parseSuccessful = double.TryParse(toParse, System.Globalization.NumberStyles.Float, numberFormat, out returnNum);
+            var parseSuccessful = double.TryParse(toParse, System.Globalization.NumberStyles.Float, numberFormat, out number);
 
             if (parseSuccessful)
             {
-                number = returnNum;
                 return parseSuccessful;
             }
 

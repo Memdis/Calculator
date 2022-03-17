@@ -115,7 +115,7 @@ namespace Calculator
             }
         }
 
-        private (List<IFunction> functions, List<IOperation> sortedOperations) GetFunctionsAndSortedOperations()
+        private (List<IFunction> functions, List<IOperation> sortedOperations) GetFunctionsAndSortedOperations() //TODO separate in two functions for better understability
         {
             List<IFunction> functions = new List<IFunction>();
             List<IOperation> sortedOperations = new List<IOperation>();

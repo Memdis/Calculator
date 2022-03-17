@@ -37,10 +37,10 @@ namespace Calculator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int DecimalSeparator {
+        [global::System.Configuration.DefaultSettingValueAttribute(",")]
+        public string DecimalSeparator {
             get {
-                return ((int)(this["DecimalSeparator"]));
+                return ((string)(this["DecimalSeparator"]));
             }
             set {
                 this["DecimalSeparator"] = value;

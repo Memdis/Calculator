@@ -47,7 +47,7 @@ namespace Calculator
             {
                 stringToCheck += inputString[i];
 
-                isNumber = number.TryParseIfFailsOutsUnchangedNum(stringToCheck, out number);
+                isNumber = number.TryParseIfFailsOutsUnchangedNum(stringToCheck, out number, Settings.DecimalSeparator);
 
                 if (isNumber)
                 {

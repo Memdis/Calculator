@@ -4,6 +4,14 @@ using System.Collections.Generic;
 
 namespace Calculator.UnitTests
 {
+    /*[TestFixture]
+    public class SettingsTests
+    {
+        [Test]
+        public void LoadSettings_
+    }*/
+
+
     [TestFixture]
     public class CalculationTests
     {
@@ -141,6 +149,8 @@ namespace Calculator.UnitTests
 
             ExecutableFunctions.AllExeEqItems.AddRange(allExeEqItems);
             ExecutableFunctions.AllExeEqItemsRepresentation.AddRange(allExeEqItemsRepresentation);
+
+            Settings.SaveSettings((int)Settings.AngleUnits, ",");
         }
 
         [TearDown]
