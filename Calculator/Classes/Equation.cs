@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Calculator
 {
@@ -15,12 +16,12 @@ namespace Calculator
 
         public double Calculate()
         {
-            var functionsAndSortedOperations = GetFunctionsAndSortedOperations();
-            List<IFunction> functions = functionsAndSortedOperations.functions;
-            List<IOperation> sortedOperations = functionsAndSortedOperations.sortedOperations; 
+            List<IFunction> functions = GetTFromList<IFunction>();
+            List<IOperation> sortedOperations = GetTFromList<IOperation>();
+            sortedOperations.Sort((y, x) => x.GetPriority().CompareTo(y.GetPriority())); 
 
             ExecuteFunctions(functions);
-            ExecutOperations(sortedOperations);
+            ExecuteOperations(sortedOperations);
 
             return GetEquationResult();
         }
@@ -37,21 +38,14 @@ namespace Calculator
                 throw new FormatException("Wrong input format!"); //TODO pupup window
             }
 
-            if (Items[0] is IEquation  )
-            {
-                IEquation equation = (IEquation)Items[0];
-                try
-                {
-                    return Convert.ToDouble(equation.Calculate());
-                }
-                catch (Exception)
-                {
-                    throw new FormatException("Wrong input format!"); //TODO pupup window
-                }
-            }
-
             try
             {
+                if (Items[0] is IEquation)
+                {
+                    var equation = (IEquation)Items[0];
+                    return Convert.ToDouble(equation.Calculate());
+                }
+
                 return Convert.ToDouble(Items[0]);
             }
             catch (Exception)
@@ -93,7 +87,7 @@ namespace Calculator
             }
         }
 
-        private void ExecutOperations(List<IOperation> sortedOperations)
+        private void ExecuteOperations(List<IOperation> sortedOperations)
         {
             for (int i = 0; i < sortedOperations.Count; i++)
             {
@@ -115,26 +109,10 @@ namespace Calculator
             }
         }
 
-        private (List<IFunction> functions, List<IOperation> sortedOperations) GetFunctionsAndSortedOperations() //TODO separate in two functions for better understability
+        private List<T> GetTFromList<T>()
         {
-            List<IFunction> functions = new List<IFunction>();
-            List<IOperation> sortedOperations = new List<IOperation>();
-
-            foreach (var item in Items)//TODO linq
-            {
-                if (item is IFunction)
-                {
-                    functions.Add((IFunction)item);
-                }
-                else if (item is IOperation)
-                {
-                    sortedOperations.Add((IOperation)item);
-                }
-            }
-
-            sortedOperations.Sort((y, x) => x.GetPriority().CompareTo(y.GetPriority()));
-
-            return (functions, sortedOperations);
+            var toReturn = new List<T>(Items.Select(i => i).OfType<T>());
+            return toReturn;
         }
     }
 }

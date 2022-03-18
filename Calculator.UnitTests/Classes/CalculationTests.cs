@@ -16,12 +16,12 @@ namespace Calculator.UnitTests
     public class CalculationTests
     {
         [Test]
-        public void Calculation_InputStringIsNull_ThrowsNullReferenceException()
+        public void Calculation_InputStringIsNull_ThrowsNullExceptions()
         {
             var eq = new Equation(null);
 
             Assert.Throws<NullReferenceException>(() => EquationHelper.ExtractItems(null));
-            Assert.Throws<NullReferenceException>(() => eq.Calculate());
+            Assert.Throws<ArgumentNullException>(() => eq.Calculate());
         }
 
         [Test]
@@ -130,6 +130,8 @@ namespace Calculator.UnitTests
         [SetUp]
         public void SetUp()
         {
+            Settings.SaveSettings((int)AngleUnits.Rad, ",");
+
             List<IOperation> _allowedOperations = new List<IOperation>() { new PlusOperation(), new MinusOperation(), new MultOperation(), new DivOperation() };
             List<IFunction> _allowedFunctions = new List<IFunction>() { new Log10Function(), new SqrtFunction(), new PowFunction(), new SinFunction(), new CosFunction(), new TanFunction() };
 
@@ -149,8 +151,6 @@ namespace Calculator.UnitTests
 
             ExecutableFunctions.AllExeEqItems.AddRange(allExeEqItems);
             ExecutableFunctions.AllExeEqItemsRepresentation.AddRange(allExeEqItemsRepresentation);
-
-            Settings.SaveSettings((int)Settings.AngleUnits, ",");
         }
 
         [TearDown]
