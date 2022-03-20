@@ -101,6 +101,7 @@ namespace Calculator.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(214, 140);
             this.Controls.Add(this.comboBoxDecimalPoint);
             this.Controls.Add(this.labelDecimalPoint);

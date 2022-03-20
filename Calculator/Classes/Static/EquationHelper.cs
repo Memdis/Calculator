@@ -8,6 +8,12 @@ namespace Calculator
 {
     public static class EquationHelper
     {
+        public static string GetStringResult(IEquation eq)
+        {
+            NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi.NumberDecimalSeparator = Settings.DecimalSeparator;
+            return eq.Calculate().ToString(nfi);
+        }
         public static double GetNumber(int startIndex, int indexShift, IEquation equation)
         {
             int numIndex = startIndex + indexShift;

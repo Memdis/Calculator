@@ -10,7 +10,7 @@ namespace Calculator.UnitTests
     }*/
 
 
-    public class EquationTests
+    public class EquationHelperTests
     {
         private TestSetupAndTearDown _testSetupAndTearDown = new TestSetupAndTearDown();
 
@@ -24,8 +24,8 @@ namespace Calculator.UnitTests
             Settings.SaveSettings((int)angleUnits, decimalSeparator);
             var eq = EquationHelper.ExtractItems(input);
 
-            var result = eq.GetStringResult();
-
+            var result = EquationHelper.GetStringResult(eq);
+            
             Assert.That(result, Is.EqualTo(correctResult));
         }
 

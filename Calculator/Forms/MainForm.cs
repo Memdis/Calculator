@@ -35,7 +35,7 @@ namespace Calculator
             try
             {
                 var equation = EquationHelper.ExtractItems(inputString);
-                textBoxResult.Text = equation.GetStringResult();
+                textBoxResult.Text = EquationHelper.GetStringResult(equation);
             }
             catch (Exception ex)
             {
