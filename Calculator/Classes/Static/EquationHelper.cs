@@ -12,36 +12,20 @@ namespace Calculator
         {
             NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberDecimalSeparator = Settings.DecimalSeparator;
-            return eq.Calculate().ToString(nfi);
+            return CalculateEquation(eq).ToString(nfi);
         }
-        public static double GetNumber(int startIndex, int indexShift, IEquation equation)
+
+        public static double CalculateEquation(IEquation eq)
         {
-            int numIndex = startIndex + indexShift;
+            List<IFunction> functions = GetTFromList<IFunction>(eq.Items);
+            List<IOperation> sortedOperations = GetTFromList<IOperation>(eq.Items);
+            sortedOperations.Sort((y, x) => x.GetPriority().CompareTo(y.GetPriority()));
 
-            if (equation == null)
-            {
-                throw new ArgumentNullException("Equation is null!"); //TODO popup error
-            }
+            ExecuteFunctions(functions, eq);
+            ExecuteOperations(sortedOperations, eq);
 
-            if (equation.Items.Count <= numIndex)
-            {
-                throw new IndexOutOfRangeException("Index is out of range!");//TODO popup error
-            }
-
-            var num = equation.Items[numIndex];
-
-            if (num is IEquation)
-            {
-                return ((IEquation)num).Calculate();
-            }
-            else if (num is double)
-            {
-                return (double)num;
-            }
-
-            throw new FormatException("Expected equation or double but received something else!"); //TODO popup error
+            return GetEquationResult(eq);
         }
-
         public static Equation ExtractItems(string inputString)
         {
             if (inputString is null)
@@ -138,6 +122,127 @@ namespace Calculator
                     items.Add(stringToCheck);
                 }
             }
+        }
+
+        public static double GetNumber(int startIndex, int indexShift, IEquation equation)
+        {
+            int numIndex = startIndex + indexShift;
+
+            if (equation == null)
+            {
+                throw new ArgumentNullException("Equation is null!"); //TODO popup error
+            }
+
+            if (equation.Items.Count <= numIndex)
+            {
+                throw new IndexOutOfRangeException("Index is out of range!");//TODO popup error
+            }
+
+            var num = equation.Items[numIndex];
+
+            if (num is IEquation)
+            {
+                return CalculateEquation((IEquation)num);
+            }
+            else if (num is double)
+            {
+                return (double)num;
+            }
+
+            throw new FormatException("Expected equation or double but received something else!"); //TODO popup error
+        }
+        
+        private static double GetEquationResult(IEquation eq)
+        {
+            if (eq.Items.Count <= 0)
+            {
+                return 0;
+            }
+
+            if (eq.Items.Count > 1)
+            {
+                throw new FormatException("Wrong input format!"); //TODO pupup window
+            }
+
+            try
+            {
+                if (eq.Items[0] is IEquation)
+                {
+                    var equation = (IEquation)eq.Items[0];
+                    return Convert.ToDouble(CalculateEquation(equation));
+                }
+
+                return Convert.ToDouble(eq.Items[0]);
+            }
+            catch (Exception)
+            {
+                throw new FormatException("Wrong input format!"); //TODO pupup window
+            }
+        }
+
+        private static void ExecuteFunctions(List<IFunction> functions, IEquation eq)
+        {
+            var items = eq.Items;
+
+            for (int i = 0; i < functions.Count; i++)
+            {
+                int functionIndex = functions[i].Index;
+                int numOfItemsToDelete;
+
+                double functionResult = functions[i].Execute(eq);
+
+                if (functions[i] is IFunctionBaseEq)
+                {
+                    numOfItemsToDelete = 2;
+                    items[functions[i].Index - 1] = functionResult;
+                    items.RemoveRange(functionIndex, 2);
+                }
+                else
+                {
+                    numOfItemsToDelete = 1;
+                    items[functions[i].Index] = functionResult;
+                    items.RemoveRange(functionIndex + 1, 1);
+                }
+
+                for (int j = functionIndex; j < items.Count; j++)
+                {
+                    object item = items[j];
+                    if (item is ExecutableEquationItem)
+                    {
+                        ((ExecutableEquationItem)item).Index -= numOfItemsToDelete;
+                    }
+                }
+            }
+        }
+
+        private static void ExecuteOperations(List<IOperation> sortedOperations, IEquation eq)
+        {
+            var items = eq.Items;
+
+            for (int i = 0; i < sortedOperations.Count; i++)
+            {
+                int operationIndex = sortedOperations[i].Index;
+                IOperation operationToExecute = (IOperation)items[operationIndex];
+
+                double operationResult = operationToExecute.Execute(eq);
+
+                for (int j = operationIndex + 2; j < items.Count; j++)
+                {
+                    if (items[j] is IOperation)
+                    {
+                        ((IOperation)items[j]).Index -= 2;
+                    }
+                }
+
+                items[operationIndex - 1] = operationResult;
+                items.RemoveRange(operationIndex, 2);
+            }
+        }
+
+        private static List<T> GetTFromList<T>(IEnumerable<object> items)
+        {
+            var toReturn = new List<T>(items.Select(i => i).OfType<T>());
+            return toReturn;
         }
 
         private static (IEquation subEquation, int subEquationLength) ConvertParenthesisToEquation(string inputStaringWithLeftParenthesis)
