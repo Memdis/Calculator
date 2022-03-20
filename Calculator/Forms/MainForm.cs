@@ -32,17 +32,18 @@ namespace Calculator
         {          
             String inputString = inputFieldTextBox.Text;
 
-            var equation = EquationHelper.ExtractItems(inputString);
-            double result = equation.Calculate();
-            textBoxResult.Text = result.ToString();
+            try
+            {
+                var equation = EquationHelper.ExtractItems(inputString);
+                textBoxResult.Text = equation.GetStringResult();
+            }
+            catch (Exception ex)
+            {
+                ShowPopUpError(ex);
+            }
+            
 
-            /*var log = Math.Log10(Math.Abs(result));
-            var floor = Math.Floor(log);
-            Int32 test = Convert.ToInt32(floor);*/
-
-            _logger.Log(inputString, textBoxResult.Text);
-
-        //TODO logging errors?
+            _logger.Log(inputString, textBoxResult.Text);//TODO logging errors?
         }
 
         private void ShowPopUpError (Exception Ex)

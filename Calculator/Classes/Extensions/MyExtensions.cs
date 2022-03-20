@@ -41,8 +41,7 @@ namespace ExtensionMethods
                 throw new ArgumentException("Decimal separator has incorrect format!");
             }
 
-            var currentCulture = System.Globalization.CultureInfo.InvariantCulture;
-            var numberFormat = (System.Globalization.NumberFormatInfo)currentCulture.NumberFormat.Clone();
+            var numberFormat = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
             numberFormat.NumberDecimalSeparator = decimalSeparator;
 
             var parseSuccessful = double.TryParse(toParse, System.Globalization.NumberStyles.Float, numberFormat, out number);

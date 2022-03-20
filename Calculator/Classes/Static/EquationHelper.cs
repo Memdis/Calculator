@@ -38,6 +38,11 @@ namespace Calculator
 
         public static Equation ExtractItems(string inputString)
         {
+            if (inputString is null)
+            {
+                throw new ArgumentNullException();
+            }
+
             List<object> items = new List<object>();
             string stringToCheck = string.Empty;
             bool isNumber = false;

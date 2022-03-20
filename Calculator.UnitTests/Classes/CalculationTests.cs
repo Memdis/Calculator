@@ -4,23 +4,17 @@ using System.Collections.Generic;
 
 namespace Calculator.UnitTests
 {
-    /*[TestFixture]
-    public class SettingsTests
-    {
-        [Test]
-        public void LoadSettings_
-    }*/
-
-
     [TestFixture]
     public class CalculationTests
     {
+        private TestSetupAndTearDown _testSetupAndTearDown = new TestSetupAndTearDown();
+
         [Test]
         public void Calculation_InputStringIsNull_ThrowsNullExceptions()
         {
             var eq = new Equation(null);
 
-            Assert.Throws<NullReferenceException>(() => EquationHelper.ExtractItems(null));
+            Assert.Throws<ArgumentNullException>(() => EquationHelper.ExtractItems(null));
             Assert.Throws<ArgumentNullException>(() => eq.Calculate());
         }
 
@@ -76,7 +70,7 @@ namespace Calculator.UnitTests
         {//results computed by online calculator https://keisan.casio.com/calculator
             new object[] { "1", 1.0 },
             new object[] { "-1", -1.0 },
-            new object[] { "sin(1)", 0.841470984807896507 }, //0.841470984807896507 -> 0.8414709848078965; 
+            new object[] { "sin(1)", 0.841470984807896507 },
             new object[] { "sin(-2)", -0.909297426825681695 },
             new object[] { "cos(1)", 0.540302305868139717 },
             new object[] { "cos(-2)", -0.416146836547142387 },
@@ -130,34 +124,13 @@ namespace Calculator.UnitTests
         [SetUp]
         public void SetUp()
         {
-            Settings.SaveSettings((int)AngleUnits.Rad, ",");
-
-            List<IOperation> _allowedOperations = new List<IOperation>() { new PlusOperation(), new MinusOperation(), new MultOperation(), new DivOperation() };
-            List<IFunction> _allowedFunctions = new List<IFunction>() { new Log10Function(), new SqrtFunction(), new PowFunction(), new SinFunction(), new CosFunction(), new TanFunction() };
-
-            List<ExecutableEquationItem> allExeEqItems = new List<ExecutableEquationItem>();
-            List<string> allExeEqItemsRepresentation = new List<string>();
-
-            foreach (var operation in _allowedOperations)
-            {
-                allExeEqItems.Add((ExecutableEquationItem)operation);
-                allExeEqItemsRepresentation.Add(operation.GetStringRepresentation());
-            }
-            foreach (var function in _allowedFunctions)
-            {
-                allExeEqItems.Add((ExecutableEquationItem)function);
-                allExeEqItemsRepresentation.Add(function.GetStringRepresentation());
-            }
-
-            ExecutableFunctions.AllExeEqItems.AddRange(allExeEqItems);
-            ExecutableFunctions.AllExeEqItemsRepresentation.AddRange(allExeEqItemsRepresentation);
+            _testSetupAndTearDown.SetUp(AngleUnits.Rad, ",");
         }
 
         [TearDown]
         public void TearDown()
         {
-            ExecutableFunctions.AllExeEqItems.Clear();
-            ExecutableFunctions.AllExeEqItemsRepresentation.Clear();
+            _testSetupAndTearDown.TearDown();
         }
     }
 }

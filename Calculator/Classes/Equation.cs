@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace Calculator
 {
@@ -14,6 +15,13 @@ namespace Calculator
             Items = items;
         }
 
+        public string GetStringResult()
+        {
+            NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi.NumberDecimalSeparator = Settings.DecimalSeparator;
+            return Calculate().ToString(nfi);
+        }
+
         public double Calculate()
         {
             List<IFunction> functions = GetTFromList<IFunction>();
@@ -25,6 +33,12 @@ namespace Calculator
 
             return GetEquationResult();
         }
+
+        //TODO asi commit- zmena bodky a ciarky vo vysledku. 
+        // Potom asi dať equation.Calculate ako private a používať iba GetResult. To má výhodu vtom, že v testopch presne určíme aké číslo sa má vracať (nebude tam logika
+        //s presnosťou). A potom doplniť testy pre čiarku a bodku. Rozdeliť testy - už budeme môcť mať samostatne test triedy pre equation helper a pre Equation.
+        //TODO ciarka a bodka sa pri zmene nastavení prepíšu v inputfield a aj vo výsledku
+        
 
         private double GetEquationResult()
         {
