@@ -1,8 +1,10 @@
-﻿namespace Calculator
+﻿using System.Collections.Generic;
+
+namespace Calculator
 {
     public interface IOperation
     {
-        double Execute(IEquation eqFuncIsPartOf);
+        double Execute(List<object> EqItems);
         string GetStringRepresentation();
         int GetPriority();
         int Index { get; set; }

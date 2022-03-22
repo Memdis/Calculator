@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Calculator
 {
@@ -7,7 +8,7 @@ namespace Calculator
         public int Index { get; set; }
         public virtual int GetPriority()
         {
-            return ExecutableEquationItemPriority.GetPriority(this);
+            return ExeEqItemHelper.GetPriority(this);
         }
 
         public virtual string GetStringRepresentation()
@@ -15,13 +16,13 @@ namespace Calculator
             return "String representation not implemented";
         }
 
-        protected double GetNum(IEquation eqWhereFunctionBelongs, int indexShift, string errorMessage)
+        protected double GetNum(List<object> eqItems, int indexShift, string errorMessage)
         {
             double num;
 
             try
             {
-                num = EquationHelper.GetNumber(Index, indexShift, eqWhereFunctionBelongs);
+                num = ExeEqItemHelper.GetNumber(Index, indexShift, eqItems);
             }
             catch
             {

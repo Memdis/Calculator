@@ -7,21 +7,23 @@ namespace Calculator
     {
         private string _path;
         private string _dateTimeFormat = "dd.MM.yyyy, HH:mm:ss";
-        public FileLogger(string path)
+        public FileLogger(string Path)
         {
-            _path = path;
+            _path = Path;
         }
 
-        public FileLogger(string path, string dateTimeFormat)
+        public FileLogger(string Path, string DateTimeFormat)
         {
-            _path = path;
-            _dateTimeFormat = dateTimeFormat;
+            _path = Path;
+            _dateTimeFormat = DateTimeFormat;
         }
         public void Log(string Equation, string Result)
         {
             //File.AppendAllText(_path, "\n" + DateTime.Now.ToString(_dateTimeFormat) + ", equation: " + Equation + ", result: " + Result);
-            
-            using (StreamWriter streamWriter = new StreamWriter(_path, true))
+
+
+            //TODO pozrieť sa na správne zaobchádzanie so subormi (subor môže byť otvorený, nemusíme mať práva doňho zapisovať atď...)
+            using (StreamWriter streamWriter = new StreamWriter(_path, true)) 
             {
                 streamWriter.WriteLine(DateTime.Now.ToString(_dateTimeFormat) + ", equation: " + Equation + ", result: " + Result);
                 streamWriter.Close();

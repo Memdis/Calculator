@@ -4,6 +4,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Version>0.2.0</Version>
+    <Authors>Miroslav Lagin</Authors>
+    <Company />
+    <Description>Calculator with text input that allows to write whole equations.</Description>
   </PropertyGroup>
 
   <ItemGroup>

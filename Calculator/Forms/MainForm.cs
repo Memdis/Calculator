@@ -14,11 +14,13 @@ namespace Calculator
     public partial class MainForm : Form
     {
         private readonly ILogger _logger;
-        public MainForm(ILogger logger)
+        private readonly ICalculation _calculation;
+        public MainForm(ILogger logger, ICalculation calculation)
         {
             InitializeComponent();
 
             _logger = logger;
+            _calculation = calculation;
 
             textBoxResult.Text = "0";
             textBoxResult.ReadOnly = true;
@@ -34,14 +36,12 @@ namespace Calculator
 
             try
             {
-                var equation = EquationHelper.ExtractItems(inputString);
-                textBoxResult.Text = EquationHelper.GetStringResult(equation);
+                textBoxResult.Text = _calculation.CalculateResult(inputString);
             }
             catch (Exception ex)
             {
                 ShowPopUpError(ex);
             }
-            
 
             _logger.Log(inputString, textBoxResult.Text);//TODO logging errors?
         }

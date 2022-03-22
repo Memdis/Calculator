@@ -3,44 +3,14 @@ using System;
 
 namespace Calculator.UnitTests
 {
-    public class EquationHelperTests
+    public class EquationTests
     {
-        private TestSetupAndTearDown _testSetupAndTearDown = new TestSetupAndTearDown();
-
-        [Test]
-        public void Calculation_InputStringIsNull_ThrowsNullExceptions()
-        {
-            var eq = new Equation(null);
-
-            Assert.Throws<ArgumentNullException>(() => EquationHelper.ExtractItems(null));
-            Assert.Throws<ArgumentNullException>(() => EquationHelper.CalculateEquation(eq));
-        }
-
-        [Test]
-        public void Calculation_InputStringIsEmpty_ReturnsZero()
-        {
-            var eq = EquationHelper.ExtractItems(string.Empty);
-            var result = EquationHelper.CalculateEquation(eq);
-
-            Assert.That(result, Is.EqualTo((double)0));
-        }
-
-        [Test]
-        [TestCaseSource(nameof(wrongFormat))]
-        public void Calculation_InputStringIsInWrongFormat_ThrowsFormatException(string inputString)
-        {
-            var eq = EquationHelper.ExtractItems(inputString);
-
-            Assert.Throws<FormatException>(() => EquationHelper.CalculateEquation(eq));
-        }
-
         [Test]
         [TestCaseSource(nameof(correctFormat))]
-        public void Calculation_InitStringIsCorrect_ReturnCorrectResults(string inputString, double expectedNum)
+        public void CalculateResult_InitStringIsCorrect_ReturnCorrectResult(string inputString, double expectedNum)
         {
-            var eq = EquationHelper.ExtractItems(inputString);
-
-            var result = EquationHelper.CalculateEquation(eq);
+            var eq = CalculationHelper.GetEquationFromString(inputString);
+            var result = eq.Calculate();
 
             // Log10(100) = 2, so to get the manitude we add 1.
             var temp = Math.Floor(Math.Log10(Math.Abs(result)));
@@ -50,18 +20,6 @@ namespace Calculator.UnitTests
 
             Assert.That(result, Is.EqualTo(expectedNum).Within(tolerance));
         }
-
-        private static string[] wrongFormat =
-        {
-            "+", "-", "*", "/", "++", "--", "**", "//", "*/", "-+", "*-", "1+1_", "§1+1",
-            "*1", "/1", "1+", "1-", "1*", "1/", "1**", "1+*",
-            "a", "aa", "a1", "a1+", "a1+1", "1a", "a+1",
-            "sin", "cos", "tan", "sqrt", "^", "log",
-            "^(2)", "(2)^", "(2)^sin(1)",
-            "1sin(1)", "sin(1+)", "sni(1)", "nsi(1)", "sin(1)cos(1)",
-            "1sqrt", "1sqrt(1)", "sqrt(1)1", "sqrt(1)-tan(1)cos(1)",
-            "()1", "1()", "()sin(1)", "()sqrt(1)"
-        };
 
         private static object[] correctFormat =
         {//results computed by online calculator https://keisan.casio.com/calculator
@@ -118,31 +76,10 @@ namespace Calculator.UnitTests
             new object[] { "cos(-332,492736999402271)", 0.869758164580488722 },
         };
 
-        [Test]
-        [TestCase("1,1+1", "2,1", AngleUnits.Rad, ",")]
-        [TestCase("1.1+1", "2.1", AngleUnits.Rad, ".")]
-        [TestCase("sin(1)", "0,8414709848078965", AngleUnits.Rad, ",")] //TODO use pi/2 when constants are implemented
-        [TestCase("sin(90.0)", "1", AngleUnits.Deg, ".")]
-        public void GetStringResult_SettingsAreChanged_ReturnCorrectString(string input, string correctResult, AngleUnits angleUnits, string decimalSeparator)
-        {
-            Settings.SaveSettings((int)angleUnits, decimalSeparator);
-            var eq = EquationHelper.ExtractItems(input);
-
-            var result = EquationHelper.GetStringResult(eq);
-            
-            Assert.That(result, Is.EqualTo(correctResult));
-        }
-
         [SetUp]
         public void SetUp()
         {
-            _testSetupAndTearDown.SetUp(AngleUnits.Rad, ",");
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _testSetupAndTearDown.TearDown();
+            Settings.SaveSettings((int)AngleUnits.Rad, ",");
         }
     }
 }

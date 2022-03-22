@@ -1,6 +1,6 @@
 ﻿namespace Calculator
 {
-    public interface IFunctionBaseEq : IFunction
+    public interface IFunctionBase : IFunction
     {
         public IEquation BaseEquation { get; set; }
     }

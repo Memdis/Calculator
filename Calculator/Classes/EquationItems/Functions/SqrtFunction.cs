@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Calculator
 {
     public class SqrtFunction : ExecutableEquationItem, IFunction
     {
-        public double Execute(IEquation eqWhereFunctionBelongs)
+        public double Execute(List<object> EqItems)
         {
-            double num = GetNum(eqWhereFunctionBelongs, 1, "sqrt function");
+            double num = GetNum(EqItems, 1, "sqrt function");
 
             return Math.Sqrt(num);
         }

@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using ExtensionMethods;
 
 namespace Calculator
 {
     public class CosFunction : ExecutableEquationItem, IFunction
     {
-        public double Execute(IEquation eqWhereFunctionBelongs)
+        public double Execute(List<object> EqItems)
         {
-            double num = GetNum(eqWhereFunctionBelongs, 1, "cos function");
+            double num = GetNum(EqItems, 1, "cos function");
 
             if (Settings.AngleUnits == AngleUnits.Deg)
             {
