@@ -78,9 +78,9 @@ namespace Calculator
                 for (int j = functionIndex; j < items.Count; j++)
                 {
                     object item = items[j];
-                    if (item is ExecutableEquationItem)
+                    if (item is EquationItem)
                     {
-                        ((ExecutableEquationItem)item).Index -= numOfItemsToDelete;
+                        ((EquationItem)item).Index -= numOfItemsToDelete;
                     }
                 }
             }

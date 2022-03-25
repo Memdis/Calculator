@@ -4,11 +4,11 @@ using ExtensionMethods;
 
 namespace Calculator
 {
-    public class SinFunction : ExecutableEquationItem, IFunction
+    public class SinFunction : EquationItem, IFunction
     {
         public double Execute(List<object> EqItems)
         {
-            double num = GetNum(EqItems, 1, "sin function");
+            double num = GetNum(EqItems, Index, 1);
 
             if (Settings.AngleUnits == AngleUnits.Deg)
             {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Calculator
 {
-    public static class ExeEqItemHelper
+    public static class EqItemHelper
     {
         public static double GetNumber(int StartIndex, int IndexShift, List<object> EqItems)
         {
@@ -32,7 +32,7 @@ namespace Calculator
 
             throw new FormatException("Expected equation or double but received something else!");
         }
-        public static int GetPriority(ExecutableEquationItem item)
+        public static int GetPriority(EquationItem item)
         {
             if (item is IOperation)
             {

@@ -56,12 +56,12 @@ namespace Calculator
                 if (matchedFunctions.Count() == 1)
                 {
                     var item = matchedFunctions.First();
-                    ExecutableEquationItem itemToAdd = null;
+                    EquationItem itemToAdd = null;
                     //TODO zrusit IOperation a operacie budu tiež iba IFunction - je to vlastne dobrý nápad?
                     //TODO empty space handling
                     if (item is IFunction)
                     {
-                        itemToAdd = (ExecutableEquationItem)((IFunction)item).NewInstance();
+                        itemToAdd = (EquationItem)((IFunction)item).NewInstance();
                     }
                     else if (item is IOperation)
                     {
@@ -72,7 +72,7 @@ namespace Calculator
                             continue;
                         }
 
-                        itemToAdd = (ExecutableEquationItem)((IOperation)item).NewInstance();
+                        itemToAdd = (EquationItem)((IOperation)item).NewInstance();
                     }
 
                     itemToAdd.Index = items.Count;

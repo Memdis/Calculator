@@ -4,11 +4,11 @@ using ExtensionMethods;
 
 namespace Calculator
 {
-    public class CosFunction : ExecutableEquationItem, IFunction
+    public class CosFunction : EquationItem, IFunction
     {
         public double Execute(List<object> EqItems)
         {
-            double num = GetNum(EqItems, 1, "cos function");
+            double num = GetNum(EqItems, Index, 1);
 
             if (Settings.AngleUnits == AngleUnits.Deg)
             {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Calculator
 {
-    public class Log10Function : ExecutableEquationItem, IFunction
+    public class Log10Function : EquationItem, IFunction
     {
         public double Execute(List<object> EqItems)
         {
-            double num = GetNum(EqItems, 1, "log function");
+            double num = GetNum(EqItems, Index, 1);
 
             return Math.Log10(num);
         }

@@ -2,12 +2,12 @@
 
 namespace Calculator
 {
-    public class DivOperation : ExecutableEquationItem, IOperation
+    public class DivOperation : EquationItem, IOperation
     {
         public double Execute(List<object> EqItems)
         {
-            double leftNum = GetNum(EqItems, -1, "div operation");
-            double rightNum = GetNum(EqItems, 1, "div operation");
+            double leftNum = GetNum(EqItems, Index, -1);
+            double rightNum = GetNum(EqItems, Index, 1);
 
             return leftNum / rightNum;
         }

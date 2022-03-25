@@ -4,7 +4,7 @@ namespace Calculator
 {
     public static class ExecutableItems
     {
-        private static readonly List<ExecutableEquationItem> _allExeEqItems = new List<ExecutableEquationItem>();
+        private static readonly List<EquationItem> _allExeEqItems = new List<EquationItem>();
         static ExecutableItems()
         {
             List<IOperation> _allowedOperations = new List<IOperation>() { new PlusOperation(), new MinusOperation(), new MultOperation(), new DivOperation() };
@@ -12,15 +12,15 @@ namespace Calculator
 
             foreach (var operation in _allowedOperations)
             {
-                _allExeEqItems.Add((ExecutableEquationItem)operation);
+                _allExeEqItems.Add((EquationItem)operation);
             }
             foreach (var function in _allowedFunctions)
             {
-                _allExeEqItems.Add((ExecutableEquationItem)function);
+                _allExeEqItems.Add((EquationItem)function);
             }
         }
 
-        public static List<ExecutableEquationItem> Get()
+        public static List<EquationItem> Get()
         {
             return _allExeEqItems;
         }

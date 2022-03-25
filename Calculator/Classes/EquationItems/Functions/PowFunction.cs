@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Calculator
 {
-    public class PowFunction : ExecutableEquationItem, IFunctionBase
+    public class PowFunction : EquationItem, IFunctionBase
     {
         public IEquation BaseEquation { get ; set ; }
 
         public double Execute(List<object> EqItems)
         {
-            double numBase = GetNum(EqItems, -1, "pow function");
-            double num = GetNum(EqItems, 1, "pow function");
+            double numBase = GetNum(EqItems, Index, -1);
+            double num = GetNum(EqItems, Index, 1);
             
             return Math.Pow(numBase, num);
         }

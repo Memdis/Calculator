@@ -187,7 +187,7 @@ namespace Calculator
             // 
             // textBoxResult
             // 
-            this.textBoxResult.Location = new System.Drawing.Point(12, 109);
+            this.textBoxResult.Location = new System.Drawing.Point(12, 110);
             this.textBoxResult.Name = "textBoxResult";
             this.textBoxResult.Size = new System.Drawing.Size(728, 23);
             this.textBoxResult.TabIndex = 7;
@@ -205,7 +205,7 @@ namespace Calculator
             this.Controls.Add(this.inputFieldLabel);
             this.Controls.Add(this.menuStrip1);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Calculator";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

@@ -4,11 +4,11 @@ using ExtensionMethods;
 
 namespace Calculator
 {
-    public class TanFunction : ExecutableEquationItem, IFunction
+    public class TanFunction : EquationItem, IFunction
     {
         public double Execute(List<object> EqItems)
         {
-            double num = GetNum(EqItems, 1, "tan function");
+            double num = GetNum(EqItems, Index, 1);
 
             if (Settings.AngleUnits == AngleUnits.Deg)
             {

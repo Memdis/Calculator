@@ -2,12 +2,12 @@
 
 namespace Calculator
 {
-    public class MultOperation : ExecutableEquationItem, IOperation
+    public class MultOperation : EquationItem, IOperation
     {
         public double Execute(List<object> EqItems)
         {
-            double leftNum = GetNum(EqItems, -1, "mult operation");
-            double rightNum = GetNum(EqItems, 1, "mult operation");
+            double leftNum = GetNum(EqItems, Index, -1);
+            double rightNum = GetNum(EqItems, Index, 1);
 
             return leftNum * rightNum;
         }
