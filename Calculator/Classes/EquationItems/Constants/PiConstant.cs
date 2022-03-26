@@ -1,38 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using ExtensionMethods;
 
 namespace Calculator
 {
-    public class SinFunction : EquationItem, IFunction
+    public class PiConstant : EquationItem, IFunction
     {
-        public SinFunction(FunctionType type)
+        public PiConstant(FunctionType type)
         {
             Type = type;
         }
         public double Execute(List<object> EqItems)
         {
-            double num = GetNum(EqItems, Index, 1);
-
-            if (Settings.AngleUnits == AngleUnits.Deg)
+            if (Settings.AngleUnits == AngleUnits.Rad)
             {
-                return Math.Sin(num.DegToRad());
+                return Math.PI;
             }
             else
             {
-                return Math.Sin(num);
+                return 90;
             }
         }
-
         public override string GetStringRepresentation()
         {
-            return "sin";
+            return "pi";
         }
 
         public IFunction NewInstance()
         {
-            return new SinFunction(Type);
+            return new PiConstant(Type);
         }
     }
-
 }

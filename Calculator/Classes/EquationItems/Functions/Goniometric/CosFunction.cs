@@ -6,6 +6,10 @@ namespace Calculator
 {
     public class CosFunction : EquationItem, IFunction
     {
+        public CosFunction(FunctionType type)
+        {
+            Type = type;
+        }
         public double Execute(List<object> EqItems)
         {
             double num = GetNum(EqItems, Index, 1);
@@ -27,9 +31,7 @@ namespace Calculator
 
         public IFunction NewInstance()
         {
-            return new CosFunction();
+            return new CosFunction(Type);
         }
     }
-
-
 }

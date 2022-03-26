@@ -2,8 +2,13 @@
 
 namespace Calculator
 {
-    public class DivOperation : EquationItem, IOperation
+    public class DivOperation : EquationItem, IFunction
     {
+        public DivOperation(FunctionType type)
+        {
+            Type = type;
+        }
+
         public double Execute(List<object> EqItems)
         {
             double leftNum = GetNum(EqItems, Index, -1);
@@ -22,9 +27,10 @@ namespace Calculator
             return "/";
         }
 
-        public IOperation NewInstance()
+        public IFunction NewInstance()
         {
-            return new DivOperation();
+            return new DivOperation(Type);
         }
     }
+
 }

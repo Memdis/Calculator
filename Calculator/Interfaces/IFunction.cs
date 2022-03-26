@@ -8,6 +8,7 @@ namespace Calculator
         string GetStringRepresentation();
         int GetPriority();
         int Index { get; set; }
+        public FunctionType Type { get; }
         IFunction NewInstance();
     }
 }

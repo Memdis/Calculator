@@ -14,33 +14,34 @@ namespace Calculator
         }
         public double Calculate()
         {
-            var functionsExecutedItems = ExecuteFunctions(Items);
-            var functionsAndOperationsExecutedItems = ExecuteOperations(functionsExecutedItems);
+            var constsExecutedItems = ExecuteConstants(Items);
+            var constsFuncsExecutedItems = ExecuteFunctions(constsExecutedItems);
+            var constsFuncsOpersExecutedItems = ExecuteOperations(constsFuncsExecutedItems);
 
-            return GetEquationResult(functionsAndOperationsExecutedItems);
+            return GetEquationResult(constsFuncsOpersExecutedItems);
         }
 
-        private static double GetEquationResult(List<object> FunctionsAndOperationsExecutedItems)
+        private static double GetEquationResult(List<object> EqItemsAfterConstsFuncsOpersAreExecuted)
         {
-            if (FunctionsAndOperationsExecutedItems.Count <= 0)
+            if (EqItemsAfterConstsFuncsOpersAreExecuted.Count <= 0)
             {
                 return 0;
             }
 
-            if (FunctionsAndOperationsExecutedItems.Count > 1)
+            if (EqItemsAfterConstsFuncsOpersAreExecuted.Count > 1)
             {
                 throw new FormatException("Wrong input format!");
             }
 
             try
             {
-                if (FunctionsAndOperationsExecutedItems[0] is IEquation)
+                if (EqItemsAfterConstsFuncsOpersAreExecuted[0] is IEquation)
                 {
-                    var equation = (IEquation)FunctionsAndOperationsExecutedItems[0];
+                    var equation = (IEquation)EqItemsAfterConstsFuncsOpersAreExecuted[0];
                     return Convert.ToDouble(equation.Calculate());
                 }
 
-                return Convert.ToDouble(FunctionsAndOperationsExecutedItems[0]);
+                return Convert.ToDouble(EqItemsAfterConstsFuncsOpersAreExecuted[0]);
             }
             catch (Exception)
             {
@@ -48,12 +49,30 @@ namespace Calculator
             }
         }
 
-        private static List<object> ExecuteFunctions(List<object> EqItems)
+        private static List<object> ExecuteConstants(List<object> EqItems)
         {
             List<object> items = new List<object>();
             items.AddRange(EqItems);
 
-            List<IFunction> functions = GetTFromList<IFunction>(items);
+            List<IFunction> constants = GetFunctionTypeFromList(items, FunctionType.Constant);
+
+            for (int i = 0; i < constants.Count; i++)
+            {
+                int constIndex = constants[i].Index;
+                IFunction constToExecute = (IFunction)items[constIndex];
+
+                items[constIndex] = constToExecute.Execute(items);
+            }
+
+            return items;
+        }
+
+        private static List<object> ExecuteFunctions(List<object> EqItemsAfterConstsAreExecuted)
+        {
+            List<object> items = new List<object>();
+            items.AddRange(EqItemsAfterConstsAreExecuted);
+
+            List<IFunction> functions = GetFunctionTypeFromList(items, FunctionType.Function);
 
             for (int i = 0; i < functions.Count; i++)
             {
@@ -87,39 +106,48 @@ namespace Calculator
 
             return items;
         }
-        private static List<object> ExecuteOperations(List<object> FunctionsExecutedItems)
+        private static List<object> ExecuteOperations(List<object> EqItemsAfterConstsAndFuncsAreExecuted)
         {
             List<object> items = new List<object>();
-            items.AddRange(FunctionsExecutedItems);
+            items.AddRange(EqItemsAfterConstsAndFuncsAreExecuted);
 
-            List<IOperation> sortedOperations = GetTFromList<IOperation>(items);
+            List<IFunction> sortedOperations = GetFunctionTypeFromList(items, FunctionType.Operation);
             sortedOperations.Sort((y, x) => x.GetPriority().CompareTo(y.GetPriority()));
 
             for (int i = 0; i < sortedOperations.Count; i++)
             {
                 int operationIndex = sortedOperations[i].Index;
-                IOperation operationToExecute = (IOperation)items[operationIndex];
+                int operationRange = operationIndex == 0 ? 1 : 2;
+                IFunction operationToExecute = (IFunction)items[operationIndex];
 
                 double operationResult = operationToExecute.Execute(items);
 
                 for (int j = operationIndex + 2; j < items.Count; j++)
                 {
-                    if (items[j] is IOperation)
+                    if (items[j] is IFunction)
                     {
-                        ((IOperation)items[j]).Index -= 2;
+                        ((IFunction)items[j]).Index -= operationRange;
                     }
                 }
 
-                items[operationIndex - 1] = operationResult;
-                items.RemoveRange(operationIndex, 2);
+                if (operationIndex == 0)
+                {
+                    items[operationIndex] = operationResult;
+                    items.RemoveRange(operationIndex + 1, operationRange);
+                }
+                else
+                {
+                    items[operationIndex - 1] = operationResult;
+                    items.RemoveRange(operationIndex, operationRange);
+                }
             }
 
             return items;
         }
 
-        private static List<T> GetTFromList<T>(IEnumerable<object> items)
+        private static List<IFunction> GetFunctionTypeFromList(IEnumerable<object> items, FunctionType functionType)
         {
-            var toReturn = new List<T>(items.Select(i => i).OfType<T>());
+            var toReturn = new List<IFunction>(items.Select(i => i).OfType<IFunction>().Where(i => i.Type == functionType));
             return toReturn;
         }
     }

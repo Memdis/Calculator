@@ -5,21 +5,14 @@ namespace Calculator
 {
     public class SqrtFunction : EquationItem, IFunction
     {
+        public SqrtFunction(FunctionType type)
+        {
+            Type = type;
+        }
         public double Execute(List<object> EqItems)
         {
             double num = GetNum(EqItems, Index, 1);
             return Math.Sqrt(num);
-            /*
-            try
-            {
-                num = GetNumSqrt(EqItems, Index, 1);
-            }
-            catch (Exception)
-            {
-                throw new FormatException("Problem in Sqrt function!");
-            }
-            
-            return Math.Sqrt(num);*/
         }
 
         public override string GetStringRepresentation()
@@ -29,7 +22,7 @@ namespace Calculator
 
         public IFunction NewInstance()
         {
-            return new SqrtFunction();
+            return new SqrtFunction(Type);
         }
     }
 }

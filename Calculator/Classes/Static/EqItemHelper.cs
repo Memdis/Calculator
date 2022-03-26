@@ -34,11 +34,11 @@ namespace Calculator
         }
         public static int GetPriority(EquationItem item)
         {
-            if (item is IOperation)
+            if (item.Type == FunctionType.Operation)
             {
                 return 0;
             }
-            else if (item is IFunction)
+            else if (item.Type == FunctionType.Function)
             {
                 return 2;
             }

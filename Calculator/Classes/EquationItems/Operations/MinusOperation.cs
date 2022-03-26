@@ -2,11 +2,16 @@
 
 namespace Calculator
 {
-    public class MinusOperation : EquationItem, IOperation
+    public class MinusOperation : EquationItem, IFunction
     {
+        public MinusOperation(FunctionType type)
+        {
+            Type = type;
+        }
+
         public double Execute(List<object> EqItems)
         {
-            double leftNum = GetNum(EqItems, Index, -1);
+            double leftNum = Index == 0 ? 0 : GetNum(EqItems, Index, -1);
             double rightNum = GetNum(EqItems, Index, 1);
 
             return leftNum - rightNum;
@@ -16,9 +21,9 @@ namespace Calculator
             return "-";
         }
 
-        public IOperation NewInstance()
+        public IFunction NewInstance()
         {
-            return new MinusOperation();
+            return new MinusOperation(Type);
         }
     }
 }

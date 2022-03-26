@@ -2,8 +2,12 @@
 
 namespace Calculator
 {
-    public class PlusOperation : EquationItem, IOperation
+    public class PlusOperation : EquationItem, IFunction
     {
+        public PlusOperation(FunctionType type)
+        {
+            Type = type;
+        }
         public double Execute(List<object> EqItems)
         {
             double leftNum = GetNum(EqItems, Index, -1);
@@ -17,9 +21,9 @@ namespace Calculator
             return "+";
         }
 
-        public IOperation NewInstance()
+        public IFunction NewInstance()
         {
-            return new PlusOperation();
+            return new PlusOperation(Type);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Calculator.UnitTests
             // Log10(100) = 2, so to get the manitude we add 1.
             var temp = Math.Floor(Math.Log10(Math.Abs(result)));
             int magnitude = 1 + (result == 0.0 ? -1 : Convert.ToInt32(double.IsInfinity(temp) ? 0.0 : temp));
-            int precision = 14 - magnitude;
+            int precision = 13 - magnitude;
             double tolerance = 1.0 / Math.Pow(10, precision);
 
             Assert.That(result, Is.EqualTo(expectedNum).Within(tolerance));
@@ -26,6 +26,8 @@ namespace Calculator.UnitTests
             new object[] { "1", 1.0 },
             new object[] { "-1", -1.0 },
             new object[] { "sin(1)", 0.841470984807896507 },
+            new object[] { "-sin(1)", -0.841470984807896507 },
+            new object[] { "1-sin(1)", 0.158529015192103493 },
             new object[] { "sin(-2)", -0.909297426825681695 },
             new object[] { "cos(1)", 0.540302305868139717 },
             new object[] { "cos(-2)", -0.416146836547142387 },
@@ -74,6 +76,13 @@ namespace Calculator.UnitTests
             new object[] { "(cos(12,151/956/7*4+1*(-332,5)))", 0.8697581645804889 },
             new object[] { "12,151/956/7*4+1*(-332,5)", -332.492736999402271 },
             new object[] { "cos(-332,492736999402271)", 0.869758164580488722 },
+
+            new object[] { "pi", 3.141592653589793238 },
+            new object[] { "-pi", -3.141592653589793238 },
+            new object[] { "(pi-pi)", 0},
+            new object[] { "-pi+pi", 0 },
+            new object[] { "-pi*(-1)", 3.141592653589793238 },
+            new object[] { "0,5529999654*cos(pi/551-(545*(-2,11)))-458,22*tan(42*pi*(-pi))", -76.6211771915088692 },
         };
 
         [SetUp]

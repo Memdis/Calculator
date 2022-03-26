@@ -5,6 +5,10 @@ namespace Calculator
 {
     public class PowFunction : EquationItem, IFunctionBase
     {
+        public PowFunction(FunctionType type)
+        {
+            Type = type;
+        }
         public IEquation BaseEquation { get ; set ; }
 
         public double Execute(List<object> EqItems)
@@ -22,7 +26,7 @@ namespace Calculator
 
         public IFunction NewInstance()
         {
-            return new PowFunction();
+            return new PowFunction(Type);
         }
     }
 }

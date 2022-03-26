@@ -2,8 +2,12 @@
 
 namespace Calculator
 {
-    public class MultOperation : EquationItem, IOperation
+    public class MultOperation : EquationItem, IFunction
     {
+        public MultOperation(FunctionType type)
+        {
+            Type = type;
+        }
         public double Execute(List<object> EqItems)
         {
             double leftNum = GetNum(EqItems, Index, -1);
@@ -22,9 +26,9 @@ namespace Calculator
             return "*";
         }
 
-        public IOperation NewInstance()
+        public IFunction NewInstance()
         {
-            return new MultOperation();
+            return new MultOperation(Type);
         }
     }
 }

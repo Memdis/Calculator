@@ -6,6 +6,10 @@ namespace Calculator
 {
     public class TanFunction : EquationItem, IFunction
     {
+        public TanFunction(FunctionType type)
+        {
+            Type = type;
+        }
         public double Execute(List<object> EqItems)
         {
             double num = GetNum(EqItems, Index, 1);
@@ -27,7 +31,7 @@ namespace Calculator
 
         public IFunction NewInstance()
         {
-            return new TanFunction();
+            return new TanFunction(Type);
         }
     }
 }

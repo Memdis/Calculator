@@ -5,6 +5,10 @@ namespace Calculator
 {
     public class Log10Function : EquationItem, IFunction
     {
+        public Log10Function(FunctionType type)
+        {
+            Type = type;
+        }
         public double Execute(List<object> EqItems)
         {
             double num = GetNum(EqItems, Index, 1);
@@ -19,7 +23,7 @@ namespace Calculator
 
         public IFunction NewInstance()
         {
-            return new Log10Function();
+            return new Log10Function(Type);
         }
     }
 }

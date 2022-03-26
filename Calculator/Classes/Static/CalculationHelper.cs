@@ -55,24 +55,28 @@ namespace Calculator
 
                 if (matchedFunctions.Count() == 1)
                 {
-                    var item = matchedFunctions.First();
+                    var item = (IFunction)matchedFunctions.First();
                     EquationItem itemToAdd = null;
-                    //TODO zrusit IOperation a operacie budu tiež iba IFunction - je to vlastne dobrý nápad?
                     //TODO empty space handling
-                    if (item is IFunction)
+
+                    if (item.Type == FunctionType.Function)
                     {
-                        itemToAdd = (EquationItem)((IFunction)item).NewInstance();
+                        itemToAdd = (EquationItem)item.NewInstance();
                     }
-                    else if (item is IOperation)
+                    else if (item.Type == FunctionType.Operation)
                     {
                         AddToItemsIfIsLastChar(i);
 
-                        if (items.Count == 0)
+                        /*if (items.Count == 0)
                         {
                             continue;
-                        }
+                        }*/
 
-                        itemToAdd = (EquationItem)((IOperation)item).NewInstance();
+                        itemToAdd = (EquationItem)item.NewInstance();
+                    }
+                    else if (item.Type == FunctionType.Constant)
+                    {
+                        itemToAdd = (EquationItem)item.NewInstance();
                     }
 
                     itemToAdd.Index = items.Count;
@@ -81,7 +85,7 @@ namespace Calculator
                     continue;
                 }
 
-                if (stringToCheck == "(") //TODO urobiť "(" podla systemoveho nastavenia. Je vobec niečo také? Nie sú zátvorky univerzálne všade?
+                if (stringToCheck == "(")
                 {
                     string subString = inputString.Substring(i);
                     var subEquationAndNewIndex = ConvertParenthesisToEquation(subString);

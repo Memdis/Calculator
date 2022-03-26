@@ -8,6 +8,7 @@ namespace Calculator
     public class EquationItem
     {
         public int Index { get; set; }
+        public FunctionType Type { get; protected set; }
         public virtual int GetPriority()
         {
             return EqItemHelper.GetPriority(this);
