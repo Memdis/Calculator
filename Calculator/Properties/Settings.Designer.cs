@@ -46,5 +46,17 @@ namespace Calculator.Properties {
                 this["DecimalSeparator"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
+        public int PrecisionPoints {
+            get {
+                return ((int)(this["PrecisionPoints"]));
+            }
+            set {
+                this["PrecisionPoints"] = value;
+            }
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace Calculator
 
             try
             {
-                textBoxResult.Text = _calculation.CalculateResult(inputString);
+                textBoxResult.Text = _calculation.CalculateResult(inputString);// ((double.Parse(inputString))%Math.PI).ToString();//
             }
             catch (Exception ex)
             {

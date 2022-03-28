@@ -8,5 +8,8 @@
     <Setting Name="DecimalSeparator" Type="System.String" Scope="User">
       <Value Profile="(Default)">,</Value>
     </Setting>
+    <Setting Name="PrecisionPoints" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

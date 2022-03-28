@@ -26,12 +26,12 @@ namespace ExtensionMethods
 
         public static double DegToRad(this double num)
         {
-            return (System.Math.PI / 180) * num;
+            return (Math.PI / 180) * num;
         }
 
         public static double RadToDeg(this double num)
         {
-            return (180 / System.Math.PI) * num;
+            return (180 / Math.PI) * num;
         }
 
         public static bool TryParseIfFailsOutsUnchangedNum(this double num, string toParse, out double number, string decimalSeparator)

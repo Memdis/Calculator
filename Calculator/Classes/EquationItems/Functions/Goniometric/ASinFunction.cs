@@ -4,34 +4,35 @@ using ExtensionMethods;
 
 namespace Calculator
 {
-    public class SinFunction : EquationItem, IFunction
+    public class ASinFunction : EquationItem, IFunction
     {
-        public SinFunction(FunctionType type)
+        public ASinFunction(FunctionType type)
         {
             Type = type;
         }
         public double Execute(List<object> EqItems)
         {
             double num = GetNum(EqItems, Index, 1);
+            double result = Math.Asin(num);
 
             if (Settings.AngleUnits == AngleUnits.Deg)
             {
-                return Math.Sin(num.DegToRad());
+                return result.RadToDeg();
             }
             else
             {
-                return Math.Sin(num);
+                return result;
             }
         }
 
         public override string GetStringRepresentation()
         {
-            return "sin";
+            return "asin";
         }
 
         public IFunction NewInstance()
         {
-            return new SinFunction(Type);
+            return new ASinFunction(Type);
         }
     }
 }

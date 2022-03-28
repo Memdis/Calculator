@@ -36,7 +36,7 @@ namespace Calculator.UnitTests
         [TestCase("sin(90.0)", "1", AngleUnits.Deg, ".")]
         public void CalculateResult_InitStringIsCorrectAndSettingsAreChanged_ReturnCorrectString(string input, string correctResult, AngleUnits angleUnits, string decimalSeparator)
         {
-            Settings.SaveSettings((int)angleUnits, decimalSeparator);
+            Settings.SaveSettings((int)angleUnits, decimalSeparator, 13);
 
             var calculation = new Calculation();
             var result = calculation.CalculateResult(input);
@@ -59,7 +59,7 @@ namespace Calculator.UnitTests
         [SetUp]
         public void SetUp()
         {
-            Settings.SaveSettings((int)AngleUnits.Rad, ",");
+            Settings.SaveSettings((int)AngleUnits.Rad, ",", 13);
         }
     }
 }

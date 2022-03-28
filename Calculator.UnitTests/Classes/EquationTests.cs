@@ -15,7 +15,7 @@ namespace Calculator.UnitTests
             // Log10(100) = 2, so to get the manitude we add 1.
             var temp = Math.Floor(Math.Log10(Math.Abs(result)));
             int magnitude = 1 + (result == 0.0 ? -1 : Convert.ToInt32(double.IsInfinity(temp) ? 0.0 : temp));
-            int precision = 13 - magnitude;
+            int precision = Settings.PrecisionPoints - magnitude;
             double tolerance = 1.0 / Math.Pow(10, precision);
 
             Assert.That(result, Is.EqualTo(expectedNum).Within(tolerance));
@@ -88,7 +88,7 @@ namespace Calculator.UnitTests
         [SetUp]
         public void SetUp()
         {
-            Settings.SaveSettings((int)AngleUnits.Rad, ",");
+            Settings.SaveSettings((int)AngleUnits.Rad, ",", 13);
         }
     }
 }

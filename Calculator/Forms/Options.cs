@@ -20,7 +20,7 @@ namespace Calculator.Forms
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            Settings.SaveSettings(comboBoxAngleUnits.SelectedIndex, (string)comboBoxDecimalPoint.SelectedItem);
+            Settings.SaveSettings(comboBoxAngleUnits.SelectedIndex, (string)comboBoxDecimalPoint.SelectedItem, 13);
             
             Close();
         }
