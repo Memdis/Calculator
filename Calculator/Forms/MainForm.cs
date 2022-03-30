@@ -70,5 +70,109 @@ namespace Calculator
             var optionsForm = new Options();
             optionsForm.Show();
         }
+
+        private void InsertTextToInputField(string insertionText, int selectionShift)
+        {
+            var selectionIndex = inputFieldTextBox.SelectionStart;
+
+            inputFieldTextBox.Text = inputFieldTextBox.Text.Insert(selectionIndex, insertionText);
+            inputFieldTextBox.SelectionStart = selectionIndex + insertionText.Length + selectionShift;
+            inputFieldTextBox.SelectionLength = 0;
+
+            inputFieldTextBox.Focus();
+        }
+
+        private void buttonPlus_Click(object sender, EventArgs e)
+        {
+            var function = new PlusOperation(FunctionType.Operation);
+            InsertTextToInputField(function.GetStringRepresentation(), 0);
+        }
+
+        private void buttonMinus_Click(object sender, EventArgs e)
+        {
+            var function = new MinusOperation(FunctionType.Operation);
+            InsertTextToInputField(function.GetStringRepresentation(), 0);
+        }
+
+        private void buttonMult_Click(object sender, EventArgs e)
+        {
+            var function = new MultOperation(FunctionType.Operation);
+            InsertTextToInputField(function.GetStringRepresentation(), 0);
+        }
+
+        private void buttonDiv_Click(object sender, EventArgs e)
+        {
+            var function = new DivOperation(FunctionType.Operation);
+            InsertTextToInputField(function.GetStringRepresentation(), 0);
+        }
+
+        private void buttonParenthesisLeft_Click(object sender, EventArgs e)
+        {
+            InsertTextToInputField("(", 0);
+        }
+
+        private void buttonParenthesisRight_Click(object sender, EventArgs e)
+        {
+            InsertTextToInputField(")", 0);
+        }
+
+        private void buttonParenthesisBoth_Click(object sender, EventArgs e)
+        {
+            InsertTextToInputField("()", -1);
+        }
+
+        private void buttonPow_Click(object sender, EventArgs e)
+        {
+            var function = new PowFunction(FunctionType.Function);
+            InsertTextToInputField("()"+function.GetStringRepresentation()+"()", -4);
+        }
+
+        private void buttonLog10_Click(object sender, EventArgs e)
+        {
+            var function = new Log10Function(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
+
+        private void buttonSqrt_Click(object sender, EventArgs e)
+        {
+            var function = new SqrtFunction(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
+
+        private void buttonSin_Click(object sender, EventArgs e)
+        {
+            var function = new SinFunction(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
+
+        private void buttonCos_Click(object sender, EventArgs e)
+        {
+            var function = new CosFunction(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
+
+        private void buttonTan_Click(object sender, EventArgs e)
+        {
+            var function = new TanFunction(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
+
+        private void buttonASin_Click(object sender, EventArgs e)
+        {
+            var function = new ASinFunction(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
+
+        private void buttonACos_Click(object sender, EventArgs e)
+        {
+            var function = new ACosFunction(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
+
+        private void buttonATan_Click(object sender, EventArgs e)
+        {
+            var function = new ATanFunction(FunctionType.Function);
+            InsertTextToInputField(function.GetStringRepresentation() + "()", -1);
+        }
     }
 }
