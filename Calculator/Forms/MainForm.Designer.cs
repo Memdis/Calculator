@@ -123,6 +123,7 @@ namespace Calculator
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
+            this.fileToolStripMenuItem.Visible = false;
             // 
             // newToolStripMenuItem
             // 
@@ -167,6 +168,7 @@ namespace Calculator
             this.calculatorToolStripMenuItem.Name = "calculatorToolStripMenuItem";
             this.calculatorToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.calculatorToolStripMenuItem.Text = "&Calculator";
+            this.calculatorToolStripMenuItem.Visible = false;
             // 
             // basicToolStripMenuItem
             // 
@@ -195,6 +197,7 @@ namespace Calculator
             this.supportedOperationsToolStripMenuItem.Name = "supportedOperationsToolStripMenuItem";
             this.supportedOperationsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.supportedOperationsToolStripMenuItem.Text = "&Supported Operations";
+            this.supportedOperationsToolStripMenuItem.Visible = false;
             this.supportedOperationsToolStripMenuItem.Click += new System.EventHandler(this.supportedOperationsToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
