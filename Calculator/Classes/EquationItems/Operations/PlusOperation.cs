@@ -10,7 +10,7 @@ namespace Calculator
         }
         public double Execute(List<object> EqItems)
         {
-            double leftNum = GetNum(EqItems, Index, -1);
+            double leftNum = Index == 0 ? 0 : GetNum(EqItems, Index, -1);
             double rightNum = GetNum(EqItems, Index, 1);
 
             return leftNum + rightNum;

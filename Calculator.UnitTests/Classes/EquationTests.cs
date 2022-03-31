@@ -24,6 +24,7 @@ namespace Calculator.UnitTests
         private static object[] correctFormat =
         {//results computed by online calculator https://keisan.casio.com/calculator
             new object[] { "1", 1.0 },
+            new object[] { "+1", 1.0 },
             new object[] { "-1", -1.0 },
             new object[] { "sin(1)", 0.841470984807896507 },
             new object[] { "-sin(1)", -0.841470984807896507 },
@@ -37,6 +38,7 @@ namespace Calculator.UnitTests
             new object[] { "(2)^(3)", 8.0},
             new object[] { "(-2)^(4)", 16.0},
             new object[] { "(-2)^(3)", -8.0},
+            new object[] { "(-2)^(+3)", -8.0},
             new object[] { "-2^(3)", -8.0},
             new object[] { "-2^3*2", -16.0},
             new object[] { "sqrt(2)", 1.41421356237309505},
@@ -67,7 +69,7 @@ namespace Calculator.UnitTests
             new object[] { "2,111/3", 0.703666666666666667 },
             new object[] { "2,111/3,111", 0.678559948569591771 },
 
-            new object[] { "sin(0,055)*((10)^(2)*sin(1)-99,6566*8485,2)", -46480.2698616434054 },
+            new object[] { "sin(+0,055)*((10)^(2)*sin(1)-99,6566*8485,2)", -46480.2698616434054 },
             new object[] { "sin0,055*(10^2*sin1-99,6566*8485,2)", -46480.2698616434054 },
 
             new object[] { "99999999999999,9999999999115515851454512/89595623*0,000000000000001+9999999999999999,9999999/0,22*9595", 4.36136363636363636E+20 },
@@ -77,7 +79,7 @@ namespace Calculator.UnitTests
             new object[] { "12,151/956/7*4+1*(-332,5)", -332.492736999402271 },
             new object[] { "cos(-332,492736999402271)", 0.869758164580488722 },
 
-            new object[] { "-tan(-22,322)/acos(0,11+(asin(-0,844))*(asin(atan(0,14)*asin(0,22))))", 0.230255735214589449},
+            new object[] { "-tan(-22,322)/acos(+0,11+(+asin(-0,844))*(asin(atan(0,14)*asin(0,22))))", 0.230255735214589449},
             new object[] { "88/sin(22/asin(0,111))-(acos(0,1578/(-2))+atan(0,78))", 673.580474027762},
 
             new object[] { "pi", 3.141592653589793238 },
