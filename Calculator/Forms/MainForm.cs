@@ -36,7 +36,7 @@ namespace Calculator
 
             try
             {
-                textBoxResult.Text = _calculation.CalculateResult(inputString);// ((double.Parse(inputString))%Math.PI).ToString();//
+                textBoxResult.Text = _calculation.CalculateResult(inputString);
             }
             catch (Exception ex)
             {
@@ -53,6 +53,16 @@ namespace Calculator
             MessageBox.Show(message, caption, MessageBoxButtons.OK);
         }
         
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         { 
             var aboutBoxForm = new AboutBox();
